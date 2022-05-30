@@ -21,12 +21,13 @@ def home():
          found=account_search()
          if found:
             session['loggedIn']=True 
-            flash("logged in succesfully",category="success")
+            flash("You have logged in succesfully",category="success")
             return render_template('index1.html')
            
          else:
           mes1="Incorrect password or email,please try again."
           flash(mes1,category="error")
+          return render_template('index.html')
           
     
        elif 'register' in request.form :
@@ -44,13 +45,15 @@ def home():
         if found:
             mes = "email already exists."
             flash(mes,category="error") 
+            return render_template('index.html')
         elif password1 != password2:
            mes2= "Passwords don't match"
-           flash(mes2,category="error")   
+           flash(mes2,category="error") 
+           return render_template('index.html')  
         elif len(password1) < 7:
             mes3="Password must be at least 7 characters."
             flash(mes3,category="error") 
-            
+            return render_template('index.html')    
         else:
              sql1 = "INSERT INTO users (email,password,category) VALUES (%s, %s, %s)"
              sql2 = "INSERT INTO patients (first_name, Gender, Birthdate, phone ,email ,last_name) VALUES (%s, %s, %s,%s,%s,%s)"
@@ -61,10 +64,12 @@ def home():
              mycursor.execute(sql1, val1)
              mycursor.execute(sql2, val2)
              mydb.commit() 
+             flash("Your account has been created suceesfully",category="success")
              return render_template('index1.html')
-                     
-    return render_template('index.html')
+    else:                 
+     return render_template('index.html')
 
+@app.route('/login')
 def login():
      return render_template('index1.html')
                             
