@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="loading" lang="en" data-textdirection="ltr">
+  <!-- BEGIN: Head-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
+    <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+    <meta name="author" content="PIXINVENT">
+    <title>Doctor's Profile - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin Dashboard</title>
+    <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="static/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+<script src="https://kit.fontawesome.com/b705027cc2.js" crossorigin="anonymous"></script>
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="static/css/vendors.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/components.min.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="static/css/vertical-menu.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/palette-gradient.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/clndr.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/hospital-doctor-profile.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/leaflet.css">
+    <!-- END: Page CSS-->
+
+
+  </head>
+  <!-- END: Head-->
+
+ <!-- BEGIN: Body-->
+  <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light bg-info navbar-shadow">
+      <div class="navbar-wrapper">
+        <div class="navbar-header">
+          <ul class="nav navbar-nav flex-row">
+            <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+			<!-- <i class="ft-menu font-large-1"></i> -->
+			<i class="fa-solid fa-bars font-large-1"></i>
+			</a></li>
+            <li class="nav-item"><a class="navbar-brand" href="http://127.0.0.1:5000/dlogin"><img class="brand-logo" alt="modern admin logo" src="static/images/surgery.png">
+                <h3 class="brand-text">Hello Doctor</h3></a></li>
+            <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="fa-solid fa-chevron-down"></i></a></li>
+          </ul>
+        </div>
+        <div class="navbar-container content">
+          <div class="collapse navbar-collapse" id="navbar-mobile">
+            <ul class="nav navbar-nav mr-auto float-left">
+              <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="fa-solid fa-bars"></i></a></li>
+              
+                         </ul>
+            <ul class="nav navbar-nav float-right">
+              <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-gb"></i><span class="selected-language"></span></a>
+              </li>
+             
+             
+              <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">John Doe</span><span class="avatar avatar-online"><img src="static/images/surgery.png" alt="avatar"><i></i></span></a>
+                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> Edit Profile</a>	
+                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"> Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- END: Header-->
+
+
+    <!-- BEGIN: Main Menu-->
+
+    <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
+      <div class="main-menu-content">
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+          <li class="active"><a href="http://127.0.0.1:5000/dlogin"><i class="fa-solid fa-house"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Hospital</span></a>
+          </li>
+          <li class=" navigation-header"><span data-i18n="Professional">Professional</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Professional"></i>
+          </li>
+          <li class=" nav-item"><a href="#"><i class="fa-solid fa-pen"></i><span class="menu-title" data-i18n="Appointment">Appointment</span></a>
+            <ul class="menu-content">
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dsched"><i></i><span>Doctor Schedule</span></a>
+              </li>
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dappoin"><i></i><span>Book Appointment</span></a>
+              </li>
+            </ul>
+          </li>
+          <li class=" nav-item"><a href="#"><i class="fa-solid fa-stethoscope"></i><span class="menu-title" data-i18n="Doctors">Doctors</span></a>
+            <ul class="menu-content">
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>All Doctors</span></a>
+              </li>
+             
+              <li><a class="menu-item" href="http://127.0.0.1:5000/u"><i></i><span>Doctor Profile</span></a>
+              </li>
+            </ul>
+          </li>
+          
+         
+        </ul>
+      </div>
+    </div>
+
+    <!-- END: Main Menu-->	
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+      <div class="content-overlay"></div>
+      <div class="content-wrapper">
+        <div class="content-header row">
+          <div class="content-header-left col-md-6 col-12 mb-2">
+            <h3 class="content-header-title">Doctor's Profile</h3>
+            <div class="row breadcrumbs-top">
+              <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="http://127.0.0.1:5000/dlogin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item"><a href="#">Doctors</a>
+                  </li>
+                  <li class="breadcrumb-item active">Doctor Profile
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="content-header-right col-md-6 col-12">
+            <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+              <button class="btn btn-info round dropdown-toggle dropdown-menu-right box-shadow-2 px-2 mb-1" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Settings</button>
+              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="card-bootstrap.html">Cards</a><a class="dropdown-item" href="component-buttons-extended.html">Buttons</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="content-body"><!-- Doctor's Profile -->
+
+<section id="doctor-profile">
+  <div class="row match-height">
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-header text-center">
+          <img src="../../../app-assets/images/portrait/small/avatar-s-2.png" alt=""
+            class="card-img-top mb-1 img-fluid w-25 rounded-circle">
+          <h1 class="card-title mb-1">Irene Baker</h1>
+          <h6 class="text-light">Dermatologist</h6>
+        </div>
+        <div class="card-body">
+          <h6 class="text-bold-500">Email:</h6>
+          <p>irenebaker@gmail.com</p>
+
+          <h6 class="text-bold-500">Age:</h6>
+          <p>35 Years Old</p>
+
+
+          <h6 class="text-bold-500">Degree:</h6>
+          <p>M.D</p>
+
+          <h6 class="text-bold-500">Speciality:</h6>
+          <p>Skin Problems</p>
+
+          <h6 class="text-bold-500">Consultation Fee:</h6>
+          <p>$100.00</p>
+
+          <h6 class="text-bold-500">Location:</h6>
+          <p>Manhattan</p>
+          <hr class="my-2">
+          <div id="maps-leaflet-user-location" class="height-250"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Book An Appointment</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Select Date From calender to book an appointment</p>
+          <div id="clndr-multiday" class="overflow-hidden bg-grey bg-lighten-3"></div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group mt-2">
+                <label for="symptoms">Symptoms: <span class="text-danger">*</span></label>
+                <input type="text" id="symptoms" class="form-control" name="symptoms"
+                  placeholder="Enter Your Problems Here" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-12">
+              <div class="form-group">
+                <label for="firstname">First Name: <span class="text-danger">*</span></label>
+                <input type="text" id="firstname" class="form-control" name="firstname"
+                  placeholder="Enter Your First Name Here" required>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="form-group">
+                <label for="lastname">Last Name: <span class="text-danger">*</span></label>
+                <input type="text" id="lastname" class="form-control" name="lastname"
+                  placeholder="Enter Your Last Name Here" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-12">
+              <div class="form-group">
+                <label for="gender">Gender <span class="text-danger">*</span></label>
+                <select name="gender" id="gender" class="form-control" required>
+                  <option value="">Select Your Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="notsay">Rather Not Say</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="form-group">
+                <label for="age">Age: <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="age" name="age" placeholder="Enter Your Age Here"
+                  required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-danger float-right">Book Appointment</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="clndr" class="clearfix">
+    <script type="text/template" id="clndr-template">
+            <div class="clndr-controls">
+                <div class="clndr-previous-button">&lt;</div>
+                <div class="clndr-next-button">&gt;</div>
+                <div class="current-month">
+                    <%= month %>
+                    <%= year %>
+                </div>
+
+            </div>
+            <div class="clndr-grid">
+                <div class="days-of-the-week clearfix">
+                    <% _.each(daysOfTheWeek, function(day) { %>
+                        <div class="header-day">
+                            <%= day %>
+                        </div>
+                    <% }); %>
+                </div>
+                <div class="days">
+                    <% _.each(days, function(day) { %>
+                        <div class="<%= day.classes %>" id="<%= day.id %>"><span class="day-number"><%= day.day %></span></div>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="event-listing">
+                <div class="event-listing-title">Appointments this month</div>
+                <% _.each(eventsThisMonth, function(event) { %>
+                    <div class="event-item font-small-3">
+                        <div class="event-item-day font-small-2">
+                            <%= event.date %>
+                        </div>
+                        <div class="event-item-name text-bold-600">
+                            <%= event.title %>
+                        </div>
+                        <div class="event-item-location">
+                            <%= event.location %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </script>
+  </div>
+</section>
+
+        </div>
+      </div>
+    </div>
+    <!-- END: Content-->
+
+
+   
+
+  
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="static/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="static/js/moment.min.js"></script>
+    <script src="static/js/underscore-min.js"></script>
+    <script src="static/js/clndr.min.js"></script>
+    <script src="static/js/leaflet.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="static/js/app-menu.min.js"></script>
+    <script src="static/js/app.min.js"></script>
+    <script src="static/js/customizer.min.js"></script>
+    <script src="static/js/footer.min.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="static/js/hospital-doctor-profile.min.js"></script>
+    <!-- END: Page JS-->
+
+  </body>
+  <!-- END: Body-->
+</html>
