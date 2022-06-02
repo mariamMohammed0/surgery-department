@@ -9,7 +9,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-mycursor.execute("CREATE DATABASE surgdb")
+mycursor.execute("CREATE DATABASE surgery")
 
 mycursor.execute("SHOW DATABASES")
 

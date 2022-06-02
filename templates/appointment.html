@@ -144,8 +144,9 @@
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Surgery</label>
                     <div class="col-sm-10">
-                      <select name="surgery"  data-live-search="true" id="surgery" class="form-control" title="select your surgery" > 
-                        {% for row in surgeries1 %}
+                      <select name="surgery" id="surgery" class="form-select" title="select your surgery" required> 
+                        <option value="" selected="selected">select your surgery</option>
+                        {% for row in surgeries %}
                         <option value="{{row[0]}}">{{row[1]}}</option>
                         {% endfor %}
                   
@@ -156,13 +157,14 @@
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Surgeon</label>
                     <div class="col-sm-10">
-                      <select name="consultant" data-live-search="true" id="consultant" class="form-select" title="Select your consultant"> 
+                      <select name="consultant" id="consultant" class="form-select" title="Select your surgeon" requied > 
+                        <option value="" selected="selected">select your surgeon</option>
                       </select>
                     </div>
                   </div>
 
                   <div class="row mb-3"> 
-                  <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
+                  <label for="inputDate" class="col-sm-2 col-form-label" id ="date" name="date" >Date</label>
                   <div class="col-sm-10">
                     <input type="date" class="form-control" required>
                   </div>
@@ -170,7 +172,9 @@
                 <div class="row mb-3">
                   <label for="inputTime" class="col-sm-2 col-form-label">Time</label>
                   <div class="col-sm-10">
-                    <input type="time" class="form-control" required>
+                    <select name="time"  id="time" class="form-select" title="Select time" required> 
+                      <option value="" selected="selected" >Time</option>
+                    </select>
                   </div>
                 </div>
 
@@ -209,43 +213,54 @@
 
   <!-- Template Main JS File -->
   <script src="static/js/main2.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-        
-
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> -->
   <script>
-    $(document).ready(function () {
-      $("#surgery").selectpicker();
+    let surgery_select = document.getElementById("surgery");
+    let consultant_select= document.getElementById("consultant");
+    let time_select= document.getElementById("time");
   
-      $("#consultant").selectpicker();
+    surgery.oninput = function() {
   
-      function load_data(type, category_id) {
-        $.ajax({
-          url: "/consultant/",
-          method: "POST",
-          data: { type: type, category_id: category_id },
-          dataType: "json",
-          success: function (data) { //alert(category_id)
-            var html = "";
-            for (var count = 0; count < data.length; count++) {
-              html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
-            }
-            if (type == "carData") {
-              $("#surgery").html(html);
-              $("#surgery").selectpicker("refresh");
-            } else {
-              $("#consultant").html(html);
-              $("#consultant").selectpicker("refresh");
-            }
-          },
-        });
+      category_id=surgery_select.value;
+      fetch ('/consultant/'+category_id).then(function(response){
+  response.json().then(function(data) {
+  
+  consultant_select.length = 1;
+  time_select.length = 1;
+  
+  for (let y of data.consultants) {
+  consultant_select.options[consultant_select.options.length] = new Option("DR " +y.name,y.id);
+  
       }
   
-      $(document).on("change", "#surgery", function () {
-        var category_id = $("#surgery").val();
-        load_data("carModeldata", category_id);
-       });
-    });
+      });
+  });
+  
+  
+   
+  }
+  
+  
+  consultant.oninput = function() {
+  
+  category_id2=consultant_select.value;
+  fetch ('/time/'+category_id2).then(function(response){
+  response.json().then(function(data) {
+  
+  time_select.length = 1;
+  
+  for (let y of data.times) {
+  time_select.options[time_select.options.length] = new Option(y.time,y.time);
+  
+  }
+  
+  
+  });
+  });
+  }
   </script>
+
+ 
 </body>
 
 </html>

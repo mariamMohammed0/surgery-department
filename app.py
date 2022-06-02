@@ -8,7 +8,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   passwd="abcd1234",
-  database="surgdb"
+  database="surgery"
 )
 mycursor = mydb.cursor()
   
@@ -17,7 +17,6 @@ app=Flask(__name__)
  
 #main page route
 @app.route('/',methods=['POST','GET'])
-@public
 def home(): 
     if request.method == 'POST':
        if "login" in request.form :
@@ -92,28 +91,43 @@ def home():
      return render_template('index.html')
 
 #patient routes
+
 @app.route('/plogin',methods=['POST','GET'])
 def pat_login():
        # myresult=patinfo()
         return render_template('profile.html')
     
-@app.route('/appoin',methods=['POST','GET'])
+@app.route('/appoin',methods=["POST","GET"])
 def book():
-    mycursor.execute("SELECT * FROM surgery ")
-    surgeries = mycursor.fetchall()
-    return render_template('appointment.html', surgeries1=surgeries)
-   
+    if request.method == 'POST':
+        surgery = request.form['surgery']
+        surgeon = request.form['consultant']
+        time= request.form['time']
+        date= request.form['date']
+
+        print(surgery,surgeon,time)
+        sql = "INSERT INTO appointments (surgery, DID, time,date) VALUES (%s, %s, %s,%s)"      
+        val = (surgery,surgeon,time,date)
+        mycursor.execute(sql, val)
+        mydb.commit() 
+        return redirect('/plogin')
+    else:   
+      mycursor.execute("SELECT * FROM surgery ")
+      surgeries = mycursor.fetchall()
+      return render_template('appointment.html', surgeries=surgeries)
+ 
 @app.route('/pcal')
 def calender():
        return render_template('calender.html') 
    
+   
 #admin routes   
+
 @app.route('/alogin')
 def admin():
        drdata=drview()
        patdata=patview()
        return render_template('admin.html',drdata=drdata, patdata=patdata)  
-       #return render_template('admin.html')
 
 @app.route('/u', methods = ['POST', 'GET'])
 def adm_prof():
@@ -136,8 +150,8 @@ def viewpatient():
      return render_template('hospital-ad-patients-list.html') 
  
  
-  
-#doctor routes 
+#doctor routes
+ 
 @app.route('/dlogin')
 def doctor():
        return render_template('doctor.html')    
@@ -158,12 +172,38 @@ def drlist():
 def dr_prof():
        return render_template('hospital-doctor-profile.html')          
 
+#functions
+
 def account_search():
     email= request.form['email']
     password= request.form['password']
     mycursor.execute("SELECT * FROM users WHERE email=%s AND password=%s",(email,password,))
     found=mycursor.fetchone()
     return found
+
+@app.route('/consultant/<category_id>/',methods=["POST","GET"])
+def consultant(category_id):  
+    mycursor.execute("SELECT * FROM doctors WHERE specialization = %s ", (category_id,))
+    consultants = mycursor.fetchall()  
+    OutputArray = []
+    for row in consultants:
+        outputObj = {
+            'id': row[0],
+            'name': row[1]}
+        OutputArray.append(outputObj)
+    return jsonify({'consultants':OutputArray})
+
+@app.route('/time/<category_id2>/',methods=["POST","GET"])
+def time(category_id2):  
+    
+    mycursor.execute("SELECT working_times FROM doc_schedule WHERE DID = %s ", (category_id2,))
+    times = mycursor.fetchall()  
+    OutputArray = []
+    for row in times:
+        outputObj = {
+            'time': row}
+        OutputArray.append(outputObj)
+    return jsonify({'times':OutputArray})
 
 @app.route('/patdelete/<int:record_id>', methods = ['POST', 'GET'])
 def patdelete(record_id):
@@ -209,12 +249,7 @@ def patview():
               }
        return data
 
-# def patinfo():
-#     email=patient
-#     mycursor.execute("SELECT *  FROM patients WHERE PID=%s",(email,))
-#     result = mycursor.fetchall()
-#     myresult={'rec':result,}
-#     return myresult
+
                
     
 
@@ -228,27 +263,7 @@ def patview():
 #       # using the setter method   
 # def id(self, a):   
 #     self.patient = a   
-       
- 
-@app.route("/consultant/:category_id",methods=["POST","GET"])
-def consultant():  
-    if request.method == 'POST':
-        category_id = request.form['category_id'] 
-        print(category_id)  
-        mycursor.execute("SELECT * FROM doctors WHERE Specialization = %s ", (category_id) )
-        consultants = mycursor.fetchall()  
-        OutputArray = []
-        for row in consultants:
-            outputObj = {
-                'id': row[0],
-                'name': row[1]}
-            OutputArray.append(outputObj)
-    return jsonify(OutputArray)
- 
- 
 
- 
- 
  
 app.secret_key="super secret key" 
  
