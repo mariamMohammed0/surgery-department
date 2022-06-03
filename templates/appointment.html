@@ -13,7 +13,6 @@
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
   <!-- Vendor CSS Files -->
   <link href="static/css/bootstrap.min.css" rel="stylesheet">
   <link href="static/css/bootstrap-icons.css" rel="stylesheet">
@@ -50,13 +49,17 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <!-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
-            <span class="d-none d-md-block dropdown-toggle ps-2">patient's name</span>
-          </a>
+            {% for row in datap %}
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{row[1]}} {{row[6]}}</span>
+            {% endfor %}
+            <a>
           <!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>patient's name</h6>
+              {% for row in datap %}
+              <h2>{{row[1]}} {{row[6]}}</h2>
+              {% endfor %}
               <!-- <span>Web Designer</span> -->
             </li>
             <li>
@@ -138,8 +141,7 @@
               <h5 class="card-title">Appointment form</h5>
 
               <!-- General Form Elements -->
-              <form>
-                
+              <form method='POST'>
 
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Surgery</label>
@@ -164,9 +166,9 @@
                   </div>
 
                   <div class="row mb-3"> 
-                  <label for="inputDate" class="col-sm-2 col-form-label" id ="date" name="date" >Date</label>
+                  <label for="inputDate" class="col-sm-2 col-form-label"  >Date</label>
                   <div class="col-sm-10">
-                    <input type="date" class="form-control" required>
+                    <input type="date" id ="date" name="date" class="form-control" required>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -259,7 +261,6 @@
   });
   }
   </script>
-
  
 </body>
 

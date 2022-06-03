@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.29, for macos12 (x86_64)
 --
--- Host: localhost    Database: mypythondatabase2
+-- Host: localhost    Database: surgdb
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -23,15 +23,13 @@ DROP TABLE IF EXISTS `admins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admins` (
-  `AID` int NOT NULL AUTO_INCREMENT,
+  `AID` int NOT NULL,
   `Name` varchar(255) DEFAULT NULL,
   `Gender` varchar(6) DEFAULT NULL,
   `Birthdate` date DEFAULT NULL,
   `Phone` int DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`AID`),
-  KEY `email_idx` (`email`),
-  CONSTRAINT `email` FOREIGN KEY (`email`) REFERENCES `users` (`email`)
+  PRIMARY KEY (`AID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,6 +39,7 @@ CREATE TABLE `admins` (
 
 LOCK TABLES `admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
+INSERT INTO `admins` VALUES (1,'azoza','female','2001-10-13',1111087653,'ezzat@gmail.com');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,14 +57,8 @@ CREATE TABLE `appointments` (
   `date` date DEFAULT NULL,
   `surgery` int DEFAULT NULL,
   `time` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`appointment_id`),
-  KEY `doctID` (`DID`),
-  KEY `patID` (`PID`),
-  KEY `surgery_idx` (`surgery`),
-  CONSTRAINT `doc_id` FOREIGN KEY (`DID`) REFERENCES `doctors` (`DID`),
-  CONSTRAINT `PID` FOREIGN KEY (`PID`) REFERENCES `patients` (`PID`),
-  CONSTRAINT `surgery` FOREIGN KEY (`surgery`) REFERENCES `surgery` (`idSurgery`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`appointment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +67,7 @@ CREATE TABLE `appointments` (
 
 LOCK TABLES `appointments` WRITE;
 /*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
-INSERT INTO `appointments` VALUES (8,7,NULL,'2022-06-04',5,'2pm-3pm');
+INSERT INTO `appointments` VALUES (10,6,1,'2022-07-18',4,'11am-12pm'),(11,3,1,'2022-06-15',3,'3pm-4pm'),(12,5,1,'2022-06-10',4,'4pm-5pm'),(13,4,2,'2022-07-15',4,'9pm-10pm');
 /*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,9 +82,7 @@ CREATE TABLE `doc_schedule` (
   `DID` int DEFAULT NULL,
   `working_times` varchar(45) DEFAULT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`),
-  KEY `DID_idx` (`DID`),
-  FOREIGN KEY (`DID`) REFERENCES `doctors` (`DID`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -117,14 +108,12 @@ CREATE TABLE `doctors` (
   `Name` varchar(45) DEFAULT NULL,
   `gender` varchar(45) DEFAULT NULL,
   `phone` int DEFAULT NULL,
-  `Specialization` int DEFAULT NULL,
+  `Specialization` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
-  `birthdate` date DEFAULT NULL,
+  `Birthdate` date DEFAULT NULL,
   PRIMARY KEY (`DID`),
-  KEY `speciality_idx` (`Specialization`),
-  KEY `DID_idx` (`DID`),
-  FOREIGN KEY (`email`) REFERENCES `users` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `speciality_idx` (`Specialization`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +122,7 @@ CREATE TABLE `doctors` (
 
 LOCK TABLES `doctors` WRITE;
 /*!40000 ALTER TABLE `doctors` DISABLE KEYS */;
-INSERT INTO `doctors` VALUES (3,'fathy','male',5373583,3,NULL,NULL),(4,'farah','female',456555654,4,NULL,NULL),(5,'samar','female',568787978,4,NULL,NULL),(6,'sami','male',32424443,4,NULL,NULL),(7,'shadi','male',3545454,5,NULL,NULL),(8,'suzan','female',354545555,6,NULL,NULL),(9,'tarek','male',435555,5,NULL,NULL),(10,'menna','female',435008594,6,NULL,NULL);
+INSERT INTO `doctors` VALUES (3,'fathy','male',5373583,'3',NULL,NULL),(4,'Amira','female',456555654,'4','maramiro@gmail.com','2001-10-13'),(5,'samar','female',568787978,'4',NULL,NULL),(6,'sami','male',32424443,'4',NULL,NULL),(7,'shadi','male',3545454,'5',NULL,NULL),(8,'suzan','female',354545555,'6',NULL,NULL),(9,'tarek','male',435555,'5',NULL,NULL),(10,'menna','female',435008594,'6',NULL,NULL),(11,'ahmed','male',1008765439,'3','ahmed@gmail.com','2001-06-03');
 /*!40000 ALTER TABLE `doctors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,8 +142,9 @@ CREATE TABLE `patients` (
   `email` varchar(255) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`PID`),
-  FOREIGN KEY (`email`) REFERENCES `users` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `email_idx` (`email`),
+  CONSTRAINT `email` FOREIGN KEY (`email`) REFERENCES `users` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,6 +153,7 @@ CREATE TABLE `patients` (
 
 LOCK TABLES `patients` WRITE;
 /*!40000 ALTER TABLE `patients` DISABLE KEYS */;
+INSERT INTO `patients` VALUES (1,'mariam','Female','2001-01-29',1111032686,'mariammeccawi@hotmail.com','wael'),(2,'damed','Male','2002-05-20',1002673869,'dd@hotmail.com','dedi'),(4,'dodo','Male','2003-10-21',1111850989,'dodo@hotmail.com','toto'),(5,'fofa','Female','2002-02-02',1111987654,'fofe@hotmail.com','fefe');
 /*!40000 ALTER TABLE `patients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,7 +192,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `category` varchar(255) DEFAULT NULL,
+  `category` int DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -212,7 +203,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('boo@hotmail.com','123456789','1'),('ccf','sha256$hII29AkavwCBnSyX$69775897c09084dfd6daf10aacf78956d9d497b56c4431cf71b1f0ae3013c867','1'),('DD','sha256$ZyI6EiKJa1UDy9Y1$2333c94167a09645ac1db08c782daeea84681c0bfa3a34d18416e5dd73c520fe','1'),('ddd','sha256$7a6UPxc1c2WHFX5V$7a3a62581aebd3225430435454e8cf0d64e99f23ac3e37f886cc2793f1b5457e','1'),('ee','sha256$7GMtgGMNasspcXVm$6b73fb92ad80a3b08531572ce0962d381b818577030e257f9e5795b01dfaf96b','1'),('gf','sha256$DrD026gfZ8RV5lKf$885f1e74099188e771ac09d30a1abea199648813f9194bea16216e983ab16455','1'),('hager.sherif2001@hotmail.com','gggggggggg','1'),('hello','sha256$slabwbjpeZCcFpH1$36ac95b8c96f04f46f6efc9cd84ff0f86227378b917908902920613c5a45cfbf','1'),('hjds@hotmail.com','888888888','1'),('hola','sha256$v7W1XDd3GDfr3yDC$22e6f900e74dbc6cf127226d374d7e802ba7f112b3247887942c448932cff6ec','1');
+INSERT INTO `users` VALUES ('ahmed@gmail.com','0987654321',2),('dd@hotmail.com','asdfghj',1),('dodo@hotmail.com','mnbvcxz',1),('ezzat@gmail.com','qwertyu',3),('fofe@hotmail.com','lkjhgfd',1),('maramiro@gmail.com','0987654',2),('mariammeccawi@hotmail.com','1234567',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -225,4 +216,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-02  1:36:10
+-- Dump completed on 2022-06-03  3:22:12

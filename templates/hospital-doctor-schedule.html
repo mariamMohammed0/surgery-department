@@ -67,11 +67,15 @@
               </li>
              
              
-              <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">John Doe</span><span class="avatar avatar-online"><img src="static/images/surgery.png" alt="avatar"><i></i></span></a>
+              {% for row in data %}
+            
+             
+              <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{row[1]}}</span><span class="avatar avatar-online"><img src="static/images/surgery.png" alt="avatar"><i></i></span></a>
                 <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> Edit Profile</a>	
                   <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"> Logout</a>
                 </div>
               </li>
+              {% endfor %}
             </ul>
           </div>
         </div>
