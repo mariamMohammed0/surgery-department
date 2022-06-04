@@ -1,1 +1,41 @@
-<iframe src="https://calendar.google.com/calendar/embed?src=nlfei102il09achsa8jlltu3jg%40group.calendar.google.com&ctz=Africa%2FCairo" style="border: solid 2px " width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>MY CALENDER</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+
+  <!-- <script> -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+     var calendar = $('#calendar').fullCalendar({
+   
+      header:{
+       left:'prev,next today',
+       center:'title',
+       right:'month'
+      },
+      events: [{% for row in calendar %}
+                  { title : '{{row[0]}} appointment at {{row[2]}}' , start : '{{row[1]}}',} , 
+                {% endfor %}],
+
+    });
+    });
+  
+    
+  </script>
+ </head>
+ <body>
+    <br />
+    <h3 align="center">My Appointments Calender</h3>
+    <br />
+    <div class="container">
+     <div id="calendar"></div>
+    </div>
+   </body>
+  </html>

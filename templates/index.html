@@ -29,6 +29,8 @@
 
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
         <title>Surgery</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
 	<body>
 	
@@ -201,13 +203,13 @@
 									<form method="POST" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
 									<h2>Register</h2>
 
-									<input id="fname" class="form-control" type="text" placeholder="First Name" name="fname">
-									<input id="lname" class="form-control" type="text" placeholder="Last Name" name="lname">
-									<input id="email" class="form-control" type="email" placeholder="Email" name="email">
-									<input id="phone" class="form-control" type="text" placeholder="Phone" name="phone">
-									<input id ="bd date" class ="form-control" type="date" placeholder="Birthday Date" name="bd date" >
-									<input id="password" class="form-control" type="password" placeholder="Password" name="password">
-									<input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password_confirmation">
+									<input id="fname" class="form-control" type="text" placeholder="First Name" name="fname" required>
+									<input id="lname" class="form-control" type="text" placeholder="Last Name" name="lname"required>
+									<input id="email" class="form-control" type="email" placeholder="Email" name="email"required>
+									<input id="phone" class="form-control" type="number" placeholder="Phone" name="phone"required>
+									<input id ="bd date" class ="form-control" type="text" placeholder="Birthday Date" name="bd date" required>
+									<input id="password" class="form-control" type="password" placeholder="Password" name="password"required>
+									<input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password_confirmation"required>
 									 <div class="switch">
 									  <input name="switch" id="Male" type="radio" value="Male" checked/>
 									  <label for="Male" class="switch__label">Male</label>
@@ -696,13 +698,7 @@ recording of the heart's electrical activity. It is a quick and painless procedu
 	</footer>
 	
 	
-	
-	
-	
-	
-	
-	
-	
+  
 	
 	
 	
@@ -719,5 +715,7 @@ recording of the heart's electrical activity. It is a quick and painless procedu
 
         <!--=============== MAIN JS ===============-->
         <script src="static/js/main.js"></script>
+
+
 	</body>
 	</html>

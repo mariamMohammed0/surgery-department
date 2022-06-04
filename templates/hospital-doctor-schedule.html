@@ -34,6 +34,32 @@
     <link rel="stylesheet" type="text/css" href="static/css/palette-gradient.min.css">
     <link rel="stylesheet" type="text/css" href="static/css/fullcalendar.min.css">
     <!-- END: Page CSS-->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+  
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+       var calendar = $('#fc-external-drag').fullCalendar({
+     
+        header:{
+         left:'prev,next today',
+         center:'title',
+         right:'month'
+        },
+        events: [{% for row in calendar %}
+                    { title : '{{row[0]}} appointment at {{row[2]}}' , start : '{{row[1]}}',} , 
+                  {% endfor %}],
+  
+      });
+      });
+    
+      
+    </script>
 
 
   </head>
@@ -97,7 +123,7 @@
             <ul class="menu-content">
               <li><a class="menu-item" href="http://127.0.0.1:5000/dsched"><i></i><span>Doctor Schedule</span></a>
               </li>
-              <li><a class="menu-item" href="http://127.0.0.1:5000/dappoin"><i></i><span>Book Appointment</span></a>
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dappoin"><i></i><span>Book Surgery</span></a>
               </li>
             </ul>
           </li>

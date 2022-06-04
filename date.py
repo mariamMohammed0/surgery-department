@@ -9,15 +9,17 @@ def calculate_age(born):
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  passwd="mimi2001",
+  passwd="mysql",
   database="ourdatabase"
 )
 
 mycursor = mydb.cursor()
 
 
-# mycursor.execute("SELECT PID, last_name, last_name,Email,Gender,birthdate FROM patients")
-# myresult=mycursor.fetchall()
+mycursor.execute("SELECT PID, last_name, last_name,Email,Gender,birthdate FROM patients")
+myresult=mycursor.fetchall()
+print (myresult)
+print (myresult[0][0])
 # patients=[]
 # patients.append(myresult[0][0])
 # patients.append(myresult[0][1]+", "+myresult[0][2])
@@ -45,8 +47,8 @@ mycursor = mydb.cursor()
 #     print(r)
 #     for l in r:
 #         print(l)
-mycursor.execute("SELECT COUNT(DID) FROM doctors")
-myresult = mycursor.fetchone()
-print(myresult)
+# mycursor.execute("SELECT COUNT(DID) FROM doctors")
+# myresult = mycursor.fetchone()
+# print(myresult)
 
 

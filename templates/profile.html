@@ -19,6 +19,8 @@
  
   <!-- Template Main CSS File -->
   <link href="static/css/style2.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -205,8 +207,8 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">ID</div>
-                    <div class="col-lg-9 col-md-8">{{row[0]}}</div>
+                    <div  class="col-lg-3 col-md-4 label">ID</div>
+                    <div  class="col-lg-9 col-md-8">{{row[0]}}</div>
                   </div>
 
                   <div class="row">
@@ -228,7 +230,7 @@
                     <div class="col-lg-3 col-md-4 label">Gender</div>
                     <div class="col-lg-9 col-md-8">{{row[2]}}</div>
                   </div>
-                  {% endfor %}
+                  
 
                   
                 </div>
@@ -237,20 +239,20 @@
 
                   <!-- Profile Edit Form --> 
                  
-                  <form method 'POST'>
+                  <form method = "post"  action="{{ url_for('pedit') }}">
                    
       
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="firstName" type="text" class="form-control" id="firstName">
+                        <input name="firstName" type="text" class="form-control" id="firstName" value="{{row.1}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="lastName" type="text" class="form-control" id="lastName">
+                        <input name="lastName" type="text" class="form-control" id="lastName" value="{{row.6}}" >
                       </div>
                     </div>
 
@@ -258,44 +260,49 @@
                     <div class="row mb-3">
                       <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="number" class="form-control" id="phone">
+                        <input name="phone" type="number" class="form-control" id="phone" value="{{row.4}}" >
                       </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                       <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="email">
+                        <input name="email" type="email" class="form-control" id="email" value="{{row[5]}}">
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="row mb-3">
                       <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Birthdate</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="bdate" type="date" class="form-control" id="bdate">
+                        <input name="bdate" type="date" class="form-control" id="bdate" value="{{row[3]}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="fullName"  class="col-md-4 col-lg-3 col-form-label">Gender</label>
                       <div class="col-md-8 col-lg-9">
-                        <select class="form-control" aria-label="Default select example" width="400px">
+                        <select class="form-control" name="gender" aria-label="Default select example" width="400px">
                          
-                          <option >Male</option>
-                          <option >Female</option>
+                          <option value="Male" >Male</option>
+                          <option value="Female">Female</option>
                           
                         </select>
                       </div>
                       
                     </div>
+                    <div style=" display: none;"   class="row">
+                      <div class="col-lg-3 col-md-4 label">ID</div>
+                      <div class="col-lg-9 col-md-8" name = "id">{{row[0]}}</div>
+                      <input name="id"  value="{{row[0]}}">
+                    </div>
 
 
                     <div class="text-center">
-                      <button type="submit" name="edit" class="btn btn-primary">Save Changes</button>
+                      <button type="submit"   name="edit"   class="btn btn-primary">Save Changes</button>
                     </div>
-
+                    
                   </form><!-- End Profile Edit Form -->
-                   
+                  
 
                 </div>
 
@@ -303,19 +310,17 @@
 
                   <!-- Settings Form -->
                   <form>
-
-                   
-
                     <div class="text-center">
-                      <button type="submit" name='edit' class="btn btn-primary">Save Changes</button>
+                      <button type="submit" name='edit'  class="btn btn-primary">Save Changes</button>
                     </div>
-                  </form><!-- End settings Form -->
-
+                  </form>
+                  <!-- End settings Form -->
+                  
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
+                  <form method="post" action="{{ url_for('patpass') }}">
 
                     <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
@@ -342,7 +347,7 @@
                       <button type="submit" class="btn btn-primary">Change Password</button>
                     </div>
                   </form><!-- End Change Password Form -->
-
+                  {% endfor %}
                 </div>
 
               </div><!-- End Bordered Tabs -->
