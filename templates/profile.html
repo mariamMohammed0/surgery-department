@@ -158,17 +158,26 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="static/images/profile.jpg" alt="Profile" class="rounded-circle">
+              <img src="{{ user_image }}" alt="Profile" class="rounded-circle">
+              <!-- <img src="static/images/profile.jpg" alt="Profile" class="rounded-circle"> -->
+              <!-- <img src="{{ user_image }}" alt="User Image"> -->
               {% for row in datap %}
               <h2>{{row[1]}} {{row[6]}}</h2>
               {% endfor %}
               <!-- <h3>Web Designer</h3> -->
-              <div class="social-links mt-2">
-                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-              </div>
+               <form method="post" action="/patphoto" enctype="multipart/form-data"  >
+                 <dl>
+                    <p>
+                      <input type="file" name="file" class="form-control" autocomplete="off" required>
+                    </p>
+                  </dl>
+                  <p>
+                    <button type="submit"   name="edit"   class="btn btn-primary">Save Changes</button>
+                  </p>
+                </form>
+                <!-- <div class="text-center">
+                  <button type="submit"   name="edit"   class="btn btn-primary">Save Changes</button>
+              </div> -->
             </div>
           </div>
 

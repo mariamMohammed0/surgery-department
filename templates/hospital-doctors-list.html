@@ -142,17 +142,22 @@
     <div class="row match-height">
         {% for row in dataaa %}
         <div class=" col-xl-4 col-lg-4 col-md-6">
-            <div class="card">
-                <img src="static/images/doctor.png" alt=""
-                    class="card-img-top img-fluid rounded-circle w-25 mx-auto mt-1">
-                <div class="card-body">
-                  <h6 class="card-title font-large-1 mb-0 text-center">Dr {{row[4]}}</h6>
-                    <p class="card-text card font-medium-1 text-center mb-0">Surgeon</p>
-                    <p class="font-small-3 text-center"><i class="ft-briefcase"></i>{{row[1]}} specialist</p>
-                    <p class="font-small-3 text-center"><i class="ft-briefcase"></i>Email:{{row[8]}}</p>
-                    <p class="font-small-3 text-center"><i class="ft-briefcase"></i>Phone no:{{row[6]}}</p>
+          <div class="card">
+            <img src="{{row[2]}}" alt=""
+            class="card-img-top img-fluid rounded-circle w-25 mx-auto mt-1">
+              <div class="card-body">
+           
+                
+                <h6 class="card-title font-large-1 mb-0 text-center">Dr {{row[0]}}</h6>
+                <p class="card-text card font-medium-1 text-center mb-0"> Surgeon</p>
+                <p class="font-small-3 text-center"><i class="ft-briefcase"></i>{{row[1]}} specialist</p>
+                <p class="font-small-3 text-center"><i class="ft-briefcase"></i>Email:{{row[4]}}</p>
+                <p class="font-small-3 text-center"><i class="ft-briefcase"></i>Phone no:{{row[3]}}</p>
+                <p class="font-small-3 text-center"><i class="ft-briefcase"></i>Age:{{row[5]}}</p>
 
-                </div>
+
+               
+              </div>
                 <div class="card-footer mx-auto">
                     <a href="http://127.0.0.1:5000/dappoin" class="btn btn-outline-danger btn-sm">Book Appointment</a>
                 </div>

@@ -141,7 +141,7 @@
             </div>
             <div class="media-body text-right">
               <h5 class="text-muted text-bold-500">Doctors Available</h5>
-              <h3 class="text-bold-600">{{docno}}</h3>
+              <h3 class="text-bold-600">{{count.countdoc}}</h3>
             </div>
           </div>
         </div>
@@ -157,8 +157,8 @@
               <i class="la la-stethoscope font-large-2 warning"></i>
             </div>
             <div class="media-body text-right">
-              <h5 class="text-muted text-bold-500">Visiting Doctors</h5>
-              <h3 class="text-bold-600">34</h3>
+              <h5 class="text-muted text-bold-500">Patients Accounts</h5>
+              <h3 class="text-bold-600">{{count.countpat}}</h3>
             </div>
           </div>
         </div>
@@ -174,8 +174,8 @@
               <i class="la la-calendar-check-o font-large-2 info"></i>
             </div>
             <div class="media-body text-right">
-              <h5 class="text-muted text-bold-500">Today's Inquiry</h5>
-              <h3 class="text-bold-600">3.5K</h3>
+              <h5 class="text-muted text-bold-500">Upcoming Appointments</h5>
+              <h3 class="text-bold-600">{{count.countapp}}</h3>
             </div>
           </div>
         </div>
@@ -191,8 +191,8 @@
               <i class="la la-bed font-large-2 danger"></i>
             </div>
             <div class="media-body text-right">
-              <h5 class="text-muted text-bold-500">Rooms Available</h5>
-              <h3 class="text-bold-600">179</h3>
+              <h5 class="text-muted text-bold-500">Total No. of Appointments</h5>
+              <h3 class="text-bold-600">{{count.counttapp}}</h3>
             </div>
           </div>
         </div>
@@ -233,27 +233,33 @@
   <div class="col-12 col-md-4">
     <div class="card">
       <div class="card-header">
+       
         <h4 class="card-title">Doctors Available</h4>
+        <a href="http://127.0.0.1:5000/listd" class="btn btn-danger round btn-sm"><i class="la la-plus font-small-2"></i>
+         View More Details</a>
       </div>
       <div class="card-content">
         <div class="table-responsive">
           <table id="recent-orders" class="table table-hover table-xl mb-0">
           <tbody>
+            {% for r in doc %}
             <tr>
-              <td class="text-truncate p-1 border-top-0">
+              <td class="text-truncate "style="  padding-top: 10px;  padding-bottom: 10px; padding-left: 20px; padding-right: 10px;">
                 <div class="avatar avatar-md">
-                  
+                  <img src="{{r[2]}}" class="center" alt="Profile" class="rounded-circle">
                 </div>
               </td>
               <td class="text-truncate pl-0 border-top-0">
-                <div class="name">Jane Andre</div>
-                <div class="designation text-light font-small-2">Dentist</div>
+                <div class="name">{{r[0]}}</div>
+                
               </td>
               <td class="text-right border-top-0">
-                <a href="http://127.0.0.1:5000/dappoin" class="btn btn-sm btn-outline-success">Book Appointment</a>
+                <div class="designation text-dark font-small-2">{{r[1]}}</div>
               </td>
             </tr>
-            <tr>
+            {% endfor %}
+            
+            <!-- <tr>
               <td class="text-truncate p-1">
                 <div class="avatar avatar-md">
                 
@@ -308,7 +314,7 @@
               <td class="text-right border-bottom-0 ">
                 <a href="http://127.0.0.1:5000/dappoin" class="btn btn-sm btn-outline-success">Book Appointment</a>
               </td>
-            </tr>
+            </tr> -->
           </tbody>
           </table>
         </div>
