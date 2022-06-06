@@ -1,0 +1,224 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title> Appointment form</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+
+
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
+  <!-- Vendor CSS Files -->
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/bootstrap-icons.css" rel="stylesheet">
+
+
+  <!-- Template Main CSS File -->
+  <link href="static/css/style2.css" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="http://127.0.0.1:5000/plogin" class="logo d-flex align-items-center">
+        <img src="static/images/profile.jpg" alt="">
+        <span class="d-none d-lg-block">Patient's page</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+       
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <!-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
+            {% for row in datap %}
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{row[1]}} {{row[6]}}</span>
+            {% endfor %}
+          </a>
+          <!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+                {% for row in datap %}
+                <h2>{{row[1]}} {{row[6]}}</h2>
+                {% endfor %}
+              <!-- <span>Web Designer</span> -->
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="http://127.0.0.1:5000/plogin">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="http://127.0.0.1:5000">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="http://127.0.0.1:5000/plogin">
+          <i class="bi bi-person"></i>
+          <!-- <i class="bi bi-grid"></i> -->
+          <span>profile</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="http://127.0.0.1:5000/appoin">
+          <i class="bi bi-layout-text-window-reverse"></i>
+          <span>Book appointment</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="http://127.0.0.1:5000/pcal">
+          <i class="bi bi-file-earmark"></i>
+          <span>My calender</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="http://127.0.0.1:5000/contact">
+          <i class="bi bi-file-earmark"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+  <section class="section profile">
+    <div class="app-content content">
+      <div class="content-overlay"></div>
+      <div class="content-wrapper">
+        <div class="content-header row">
+          <div class="content-header-left col-md-6 col-12 mb-2">
+            <h3 class="content-header-title">Doctors List</h3>
+            <div class="row breadcrumbs-top">
+              <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="http://127.0.0.1:5000/dlogin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item"><a href="#">Doctors</a>
+                  </li>
+                  <li class="breadcrumb-item active">All Doctors
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="content-header-right col-md-6 col-12">
+            
+          </div>
+        </div>
+        <div class="content-body"><div id="doctors-list">
+
+    <div class="row match-height">
+        {% for row in dataaa %}
+        <div class=" col-xl-2 col-lg-2 col-md-6">
+          <div class="card">
+            <img src="{{row[2]}}" alt=""
+            class="card-img-top img-fluid rounded-circle w-25 mx-auto mt-1">
+              <div class="card-body">
+           
+                
+                <h6 class="card-title font-large-1 mb-0 text-center">Dr {{row[0]}}</h6>
+                <p class="card-text card font-medium-1 text-center mb-0"> Surgeon</p>
+                <p class="font-small-3 text-center">{{row[1]}} specialist</p>
+                <p class="font-small-3 text-center">Email:{{row[4]}}</p>
+                <p class="font-small-3 text-center">Phone no:{{row[3]}}</p>
+                <p class="font-small-3 text-center">Age:{{row[5]}}</p>
+
+
+               
+              </div>
+                <div class="card-footer mx-auto">
+                    <a href="http://127.0.0.1:5000/appoin" class="btn btn-outline-danger btn-sm">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+   
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/js/validate.js"></script>
+  <script src="static/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/js/main2.js"></script>
+
+
+
+
+
+</body>
+
+</html>

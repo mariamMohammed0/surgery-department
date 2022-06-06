@@ -6,6 +6,7 @@ import mysql.connector
 from datetime import date
 from werkzeug.utils import secure_filename
 import os
+from flask_mail import Mail, Message
 
 
 mydb = mysql.connector.connect(
@@ -20,8 +21,16 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
-
 app=Flask(__name__)
+
+app.config['MAIL_SERVER']='smtp-mail.outlook.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'hospitalteam@hotmail.com'
+app.config['MAIL_PASSWORD'] = 'Project1234'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+mail= Mail(app)
+
 
 UPLOAD_FOLDER = "static/uploads/"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -40,8 +49,7 @@ def home():
     if request.method == 'POST':
        if "login" in request.form :
          found=account_search()
-         global patient
-       
+         global patient1
          global admn
          if found:
             session['loggedIn']=True 
@@ -50,7 +58,7 @@ def home():
             categ=mycursor.fetchone()
             
             if categ==(1,):
-               patient=email
+               patient1=email
                myresult=patinfo()
                flash("You have logged in succesfully",category="success")
                if myresult[0][-1]:
@@ -119,7 +127,7 @@ def home():
              mycursor.execute(sql1, val1)
              mycursor.execute(sql2, val2)
              mydb.commit() 
-             patient=email
+             patient1=email
              myresult=patinfo()
              flash("Your account has been created suceesfully",category="success")
              return render_template('profile.html',datap=myresult)
@@ -132,12 +140,23 @@ def home():
 @app.route('/plogin',methods=['POST','GET'])
 def pat_login():
         myresult=patinfo() 
-        return render_template('profile.html',datap=myresult)
+        if myresult[0][-1]:
+          photo=myresult[0][-1]
+        else:
+            photo='static\images\profile.jpg'
+        return render_template('profile.html',datap=myresult,user_image=photo)
+    
+@app.route('/pview',methods=['POST','GET'])
+def pat_view():
+        myresult=patinfo() 
+        drl=adminView()
+        return render_template('doctor-patients.html',datap=myresult,dataaa=drl)
+        
     
     
 @app.route('/appoin',methods=["POST","GET"])
 def book():
-    email=patient
+    email=patient1
     myresult=patinfo()
     if request.method == 'POST':
         surgery = request.form['surgery']
@@ -169,28 +188,50 @@ def book():
   
 @app.route('/pcal')
 def calender():
-    email=patient
+    email=patient1
     mycursor.execute("SELECT PID FROM patients WHERE email=%s",(email,))
     cal=mycursor.fetchone()    
     pid=cal[0]
     mycursor.execute("SELECT Surgery_name,date,time FROM appointments INNER JOIN surgery ON surgery= idSurgery WHERE PID=%s",(pid,))
     calendar = mycursor.fetchall()  
-    return render_template('calender.html', calendar = calendar)
+    mycursor.execute("SELECT Surgery_name,date,time FROM surgery_schedule INNER JOIN doctors ON surgery_schedule.DID= doctors.DID JOIN surgery on Specialization=idSurgery WHERE PID=%s",(pid,))
+    surgeries = mycursor.fetchall()  
+    return render_template('calender.html', calendar = calendar,surgeries=surgeries)
+
+@app.route('/contact',methods=["POST","GET"])
+def contact():
+    email=patient1
+    myresult=patinfo()
+    if request.method == 'POST':
+        message = request.form['mail']
+        msg = Message(subject="Hello",body=f"{email}\n{message}" ,sender = 'hospitalteam@hotmail.com', recipients = ['mariammeccawi@hotmail.com'])
+        mail.send(msg)
+        flash("Message sent successfully!",category="success")
+    return render_template('contact.html',datap=myresult)
 
 #admin routes   
 
 @app.route('/alogin')
 def admin():
-   myresult=admninfo()
+   myresult=admninfo()  
    appoin=appoin_table()
    drdata=drview()
    patdata=patview()
    count= admincount()
    doc=adminView()
+ 
 #    return render_template('admin.html',DATA=myresult,drdata=drdata, patdata=patdata, docno=docno[0],app=appoin,doc=doc) 
    return render_template('admin.html',DATA=myresult,drdata=drdata, patdata=patdata, count=count,app=appoin,doc=doc) 
     
-
+@app.route('/aedit',methods = ['POST', 'GET'])
+def editdrs():  
+    myresult=admninfo()
+    return render_template("edit-doctors.html",DATA=myresult) 
+    
+    
+    
+     
+    
 @app.route('/addd',methods = ['POST', 'GET'])
 def adddoctor():
    myresult=admninfo()
@@ -292,12 +333,59 @@ def user_prof():
         photo='static\images\doctor.png'
     #   flash("You have logged in succesfully",category="success")
     return render_template('users-profile.html',data=myresult, user_image=photo)
-    
-@app.route('/dappoin')
+ 
+@app.route('/dappoin',methods=["POST","GET"])
 def drappoin():
+    email=dr1
     myresult=drinfo()
-    return render_template('hospital-book-appointment.html',data=myresult)   
-   
+    if request.method == 'POST':
+        pat = request.form['patient']
+       # time= request.form['time']
+        date= request.form['date']
+        mycursor.execute("SELECT COUNT(surg_id) FROM surgery_schedule WHERE date=%s ",(date,))
+        x=mycursor.fetchone()
+        if (x[0]>2):
+            mes = "This day is not available , please choose another date"
+            flash(mes,category="error") 
+            return redirect('/dappoin')   
+        else:
+           if (x[0]==0):
+            time ="10:00" 
+           elif (x[0]==1):
+            time ="13:30"
+           elif (x[0]==2):
+            time="17:00"
+           mycursor.execute("SELECT DID FROM doctors WHERE email=%s",(email,))
+           cal=mycursor.fetchone()    
+           did=cal[0]  
+           sql = "INSERT INTO surgery_schedule (DID,PID, time, date) VALUES (%s,%s, %s, %s)"      
+           val = (did,pat,time,date)
+           mycursor.execute(sql, val)
+           mydb.commit() 
+           mes = "Surgery is successfully reserved at " +time
+           flash(mes,category="success") 
+           return redirect('/dappoin')
+        #    return render_template('hospital-book-appointment.html',data=myresult) 
+        
+        # x= mycursor.execute("SELECT * FROM surgery_schedule WHERE  date=%s ",(date,))
+        # found=mycursor.fetchone()
+        # if found:
+        #     # mes = "This appointment is not available, please choose another time or date"
+        #     # flash(mes,category="error") 
+        #     # return redirect('/appoin')   
+        # else:
+        #   sql = "INSERT INTO appointments (surgery, DID, time,date) VALUES (%s, %s, %s,%s)"      
+        #   val = (surgery,surgeon,time,date)
+        #   mycursor.execute(sql, val)
+        #   mydb.commit() 
+        #   mes = "Your appointment is successfully reserved"
+        #   flash(mes,category="success") 
+        #   return redirect('/plogin')
+    else:
+      mycursor.execute("SELECT DISTINCT patients.PID, first_name, last_name FROM appointments INNER JOIN patients ON appointments.PID= patients.PID ")
+      patients = mycursor.fetchall()
+      return render_template('hospital-book-appointment.html',patients=patients,data=myresult)     
+
 @app.route('/dsched')
 def drsched():
      myresult=drinfo()
@@ -338,7 +426,6 @@ def dredit():
         else:
             photo='static\images\doctor.png'
         return render_template('doctor.html',data=myresult, user_image=photo)
-
 
 @app.route('/docpass',methods=['POST','GET'])  
 def docpass():
@@ -419,8 +506,6 @@ def time(category_id2):
         OutputArray.append(outputObj)
     return jsonify({'times':OutputArray})
 
-
-
 @app.route('/pedit',methods=['POST','GET'])
 def pedit():
     myresult=patinfo()
@@ -492,7 +577,6 @@ def patpass():
                         photo='static\images\profile.jpg'
         return render_template('profile.html',datap=myresult, user_image=photo)
 
-
 @app.route('/patphoto',methods=['POST','GET'])  
 def patphoto():
     myresult=patinfo()
@@ -527,7 +611,6 @@ def patphoto():
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
-
 
 @app.route('/drphoto',methods=['POST','GET'])  
 def drphoto():
@@ -564,7 +647,6 @@ def drphoto():
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
 
-
 @app.route('/patdelete/<int:record_id>', methods = ['POST', 'GET'])
 def patdelete(record_id):
       flash("Record Has Been Deleted Successfully")
@@ -598,7 +680,6 @@ def drview():
               #'header':row_headers
               }
        return data
-
 
 def patview():
        mycursor.execute("SELECT PID, first_name,email FROM patients")
@@ -651,8 +732,6 @@ def admincount():
                 'counttapp':appmyresult[0]              }
     return adminlist
      
-    
-
 # def countdoc():
 #      mycursor.execute("SELECT COUNT(DID) FROM doctors")
 #      myresult = mycursor.fetchone()
@@ -664,7 +743,7 @@ def admincount():
 #      return myresult
 
 def patinfo():
-    email=patient
+    email=patient1
     mycursor.execute("SELECT * FROM patients WHERE email=%s",(email,))
     myresult=mycursor.fetchall()     
     return myresult;
@@ -685,6 +764,11 @@ def appoin_table():
      mycursor.execute("SELECT * FROM appointments JOIN surgery ON surgery=idSurgery")
      myresult=mycursor.fetchall()   
      return myresult  
+ 
+# def surgery_table():
+#     mycursor.execute("SELECT * FROM patients")
+#     myresult=mycursor.fetchall()
+#     return myresult  
   
 def get_doctors():
     mycursor.execute("SELECT* FROM doctors INNER JOIN surgery ON Specialization=idSurgery")
@@ -711,14 +795,8 @@ def adminView():
     doctors=tuple(doctors)
     return doctors
      
-    
-    
-    
-    
-    
-    
-    
-    
+
+  
 app.secret_key="super secret key" 
  
  

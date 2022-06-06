@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png">
     <link rel="shortcut icon" type="image/x-icon" href="static/images/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
-<script src="https://kit.fontawesome.com/b705027cc2.js" crossorigin="anonymous"></script>
+   <script src="https://kit.fontawesome.com/b705027cc2.js" crossorigin="anonymous"></script>
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="static/css/vendors.min.css">
@@ -31,7 +31,9 @@
     <link rel="stylesheet" type="text/css" href="static/css/palette-gradient.min.css">
     <!-- END: Page CSS-->
    
+    
   </head>
+
   <!-- END: Head-->
 
 <!-- BEGIN: Body-->
@@ -75,7 +77,21 @@
           </div>
         </div>
       </div>
+      <form method="POST"> 
+        <div> 
+          {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+         {% for category, message in messages %}
+         <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+       </div>
     </nav>
+    
     <!-- END: Header-->
 
 
@@ -140,7 +156,7 @@
 <section id="book-appointment">
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Book Surgery</h2>
+            <h2 class="card-title">Surgery form</h2>
         </div>
         <div class="card-body">
           <form method='POST'>
@@ -150,8 +166,12 @@
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Patient name</label>
                 <div class="col-sm-10">
-                  <select name="pat" id="pat" class="form-select" title="select your patient" required> 
-                    <option value="" selected="selected">Choose your patient</option>
+
+                  <select name="patient" id="patient" class="form-select" title="select patient" required> 
+                    <option value="" selected="selected">select patient:</option>
+                    {% for row in patients %}
+                    <option value="{{row[0]}}">{{row[1]}} {{row[2]}} ,ID:{{row[0]}}</option>
+                    {% endfor %}
                    
               
                 </select>
@@ -159,23 +179,15 @@
               </div>
 
               <div class="row mb-3"> 
-              <label for="inputDate" class="col-sm-2 col-form-label"  >Date</label>
+              <label for="date" class="col-sm-2 col-form-label"  >Date:</label>
               <div class="col-sm-10">
-                <input type="date" id ="date" name="date" class="form-control" required>
+                <input type="date" id ="date" name="date" required>
               </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputTime" class="col-sm-2 col-form-label">Time</label>
-              <div class="col-sm-10">
-                <select name="time"  id="time" class="form-select" title="Select time" required> 
-                  <option value="" selected="selected" >Time</option>
-                </select>
-              </div>
-            </div>
+           
 
          
         <div class="card-footer ml-auto">
-            <button type="submit" class="btn btn-outline-success mr-1">Submit</button> <button type="submit" class="btn btn-outline-danger">Cancel</button>
+            <button type="submit" class="btn btn-outline-success mr-1">Submit</button> 
         </div>
         </form>
         </div>
@@ -206,7 +218,27 @@
 
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
-
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+    
+    
+function disableHoliday(date) {
+    var string = $.datepicker.formatDate('yy-mm-dd', date);
+          
+    var filterDate = new Date(string);
+    var day = filterDate.getDay();
+    return [day != 5 && day !=6]
+    }
+    
+        $( "#date" ).datepicker({
+          minDate: 0,
+          dateFormat: 'yy-mm-dd',
+          beforeShowDay: disableHoliday
+    
+    });
+    
+    </script> 
 
   </body>
   <!-- END: Body-->
