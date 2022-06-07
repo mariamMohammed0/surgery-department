@@ -163,7 +163,7 @@
         <div class="navbar-container content">
           <div class="collapse navbar-collapse" id="navbar-mobile">
             <ul class="nav navbar-nav mr-auto float-left">
-              <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+              <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="fa-solid fa-bars"></i></a></li>
               
               
             </ul>
@@ -173,8 +173,8 @@
             
              
               <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{row[1]}}</span><span class="avatar avatar-online"><img src="static/images/surgery.png" alt="avatar"><i></i></span></a>
-                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#"> Edit Profile</a>	
-                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"> Logout</a>
+                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> <i class="fa-solid fa-pen"></i>Edit Profile</a>	
+                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                 </div>
               </li>
               {% endfor %}
@@ -191,21 +191,20 @@
     <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
       <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-          <li class="active"><a href="http://127.0.0.1:5000/dlogin"><i class="fa-solid fa-house"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Hospital</span></a>
+          <li class="active"><a href="http://127.0.0.1:5000/dlogin"><i class="fa-solid fa-house"></i><span class="menu-title" data-i18n="Dashboard Hospital">My Dashboard</span></a>
           </li>
-          <li class=" navigation-header"><span data-i18n="Professional">Professional</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Professional"></i>
-          </li>
+          
           <li class=" nav-item"><a href="#"><i class="fa-solid fa-pen"></i><span class="menu-title" data-i18n="Appointment">Appointment</span></a>
             <ul class="menu-content">
               <li><a class="menu-item" href="http://127.0.0.1:5000/dsched"><i></i><span>Doctor Schedule</span></a>
               </li>
-              <li><a class="menu-item" href="http://127.0.0.1:5000/dappoin"><i></i><span>Book Appointment</span></a>
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dappoin"><i></i><span>Book Surgery</span></a>
               </li>
             </ul>
           </li>
           <li class=" nav-item"><a href="#"><i class="fa-solid fa-stethoscope"></i><span class="menu-title" data-i18n="Doctors">Doctors</span></a>
             <ul class="menu-content">
-              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>All Doctors</span></a>
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>Scans</span></a>
               </li>
              
               <li><a class="menu-item" href="http://127.0.0.1:5000/u"><i></i><span>Doctor Profile</span></a>
@@ -256,7 +255,7 @@
                     </p>
                   </dl>
                   <p>
-                    <button type="submit"   name="edit"   class="btn btn-primary">Save Changes</button>
+                    <button type="submit" name="edit"   class="btn btn-primary">Save Changes</button>
                   </p>
                 </form>
             </div>

@@ -1,12 +1,14 @@
 import datetime
 from itertools import count
 from re import S
-from flask import Flask , render_template,request, session, redirect ,flash,url_for,jsonify
+from xml.etree.ElementTree import Comment
+from flask import Flask , render_template,request, session, redirect ,flash,url_for,jsonify,g
 import mysql.connector
 from datetime import date
 from werkzeug.utils import secure_filename
 import os
 from flask_mail import Mail, Message
+import pandas  as pd
 
 
 mydb = mysql.connector.connect(
@@ -59,24 +61,28 @@ def home():
             
             if categ==(1,):
                patient1=email
+               doctors = visiteddrs()
                myresult=patinfo()
                flash("You have logged in succesfully",category="success")
                if myresult[0][-1]:
                 photo=myresult[0][-1]
                else:
                    photo='static\images\profile.jpg'
-               return render_template('profile.html',datap=myresult, user_image=photo)
+               return render_template('profile.html',datap=myresult, user_image=photo, doctors=doctors)
             
             elif categ==(2,):
                 global dr1 
                 dr1=email
+                countdoc=drcount()
                 myresult=drinfo()
+                alldrs=get_doctors()
+                mypatients= get_mypatients()
                 if myresult[0][-1]:
                     photo=myresult[0][-1]
                 else:
                    photo='static\images\doctor.png'
              #   flash("You have logged in succesfully",category="success")
-                return render_template('doctor.html',data=myresult, user_image=photo)
+                return render_template('doctor.html',data=myresult, user_image=photo,countdoc=countdoc,mypatients=mypatients,drs=alldrs)
                  
             elif categ==(3,):
             
@@ -118,6 +124,7 @@ def home():
             flash(mes3,category="error") 
             return render_template('index.html')    
         else:
+             doctors = visiteddrs()
              sql1 = "INSERT INTO users (email,password,category) VALUES (%s, %s, %s)"
              sql2 = "INSERT INTO patients(first_name, Gender, Birthdate, phone ,email ,last_name) VALUES (%s, %s, %s,%s,%s,%s)"
              
@@ -130,7 +137,7 @@ def home():
              patient1=email
              myresult=patinfo()
              flash("Your account has been created suceesfully",category="success")
-             return render_template('profile.html',datap=myresult)
+             return render_template('profile.html',datap=myresult,doctors=doctors)
     else:                 
      return render_template('index.html')
     
@@ -140,11 +147,12 @@ def home():
 @app.route('/plogin',methods=['POST','GET'])
 def pat_login():
         myresult=patinfo() 
+        doctors = visiteddrs()
         if myresult[0][-1]:
           photo=myresult[0][-1]
         else:
             photo='static\images\profile.jpg'
-        return render_template('profile.html',datap=myresult,user_image=photo)
+        return render_template('profile.html',datap=myresult,user_image=photo,doctors=doctors)
     
 @app.route('/pview',methods=['POST','GET'])
 def pat_view():
@@ -209,6 +217,53 @@ def contact():
         flash("Message sent successfully!",category="success")
     return render_template('contact.html',datap=myresult)
 
+@app.route('/scans',methods=["POST","GET"])
+def scans():
+    email=patient1
+    myresult=patinfo()
+    scandata=scansview()
+
+    return render_template('scans.html',datap=myresult,scandata=scandata)
+
+@app.route('/scanupload',methods=["POST","GET"])
+def scanupload():
+    myresult=patinfo()
+    doctors = visiteddrs()
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        Comment = request.form['comment']
+        DocID = request.form['surgeon']
+        myresult=patinfo()
+        filename = secure_filename(file.filename)
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        NOW = datetime.datetime.now()
+        new_filename = os.path.join(UPLOAD_FOLDER, file.filename.rsplit('.',1)[0] + '_' + NOW.strftime("%d_%m_%Y_%H_%M_%S") + '.' + file.filename.rsplit('.',1)[1])
+        file.save(new_filename)
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+        path=new_filename
+        tempid= myresult[0][0]
+        # cursor.execute("INSERT INTO fruit (name, variety) VALUES (%s, %s)", (new_fruit, new_fruit_type));
+        mycursor.execute("INSERT INTO pat_scans (PatID, scan_path, comments, DocID) VALUES (%s, %s, %s,%s)", (tempid, path, Comment,DocID));
+        # mycursor.execute("UPDATE patients SET photo_path= %s WHERE email= %s ;",(path,tempemail));
+        mydb.commit()
+        myresult=patinfo()
+        if myresult[0][-1]:
+            photo=myresult[0][-1]
+        else:
+                   photo='static\images\profile.jpg'
+               
+        return render_template('profile.html', filename=filename,datap=myresult, user_image=photo, doctors=doctors)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+
 #admin routes   
 
 @app.route('/alogin')
@@ -219,22 +274,11 @@ def admin():
    patdata=patview()
    count= admincount()
    doc=adminView()
- 
-#    return render_template('admin.html',DATA=myresult,drdata=drdata, patdata=patdata, docno=docno[0],app=appoin,doc=doc) 
    return render_template('admin.html',DATA=myresult,drdata=drdata, patdata=patdata, count=count,app=appoin,doc=doc) 
-    
-@app.route('/aedit',methods = ['POST', 'GET'])
-def editdrs():  
-    myresult=admninfo()
-    return render_template("edit-doctors.html",DATA=myresult) 
-    
-    
-    
-     
     
 @app.route('/addd',methods = ['POST', 'GET'])
 def adddoctor():
-   myresult=admninfo()
+   
    if request.method == 'POST': 
       Name= request.form['Name'].capitalize()
       Password = request.form['Password']
@@ -243,45 +287,67 @@ def adddoctor():
       Specialization= request.form['Specialization']
       email= request.form['Email'].lower()
       Birthdate= request.form['Birthdate']
+    
+      age = calculateAge(Birthdate)
+      print (age)
 
-      sql1= "INSERT INTO users (email,password,category) VALUES (%s,%s, %s)"
-      val1= (email,Password,2)
+      if  age >= 25:
 
-      sql2= sql2= "INSERT INTO Doctors (Name,gender,phone,Specialization,email,Birthdate) VALUES (%s,%s, %s,%s, %s,%s)"
-      val2= (Name,Gender,Phone,Specialization,email,Birthdate)
+        sql1= "INSERT INTO users (email,password,category) VALUES (%s,%s, %s)"
+        val1= (email,Password,2)
+
+        sql2= sql2= "INSERT INTO Doctors (Name,gender,phone,Specialization,email,Birthdate) VALUES (%s,%s, %s,%s, %s,%s)"
+        val2= (Name,Gender,Phone,Specialization,email,Birthdate)
+        
+        mycursor.execute(sql1, val1)
+        mycursor.execute(sql2, val2)
+        mydb.commit()  
+        myresult=admninfo()
+        count= admincount()
+        doc=adminView()
+      else :
+          flash("DOCTOR ISN'T OLD ENOUGH" , category="error")  
+          return render_template("hospital-add-doctor.html",DATA=myresult)
       
-      mycursor.execute(sql1, val1)
-      mycursor.execute(sql2, val2)
-      mydb.commit() 
-      count= admincount()
-      doc=adminView()
+      flash("Successfully added" , category="success")
       return render_template("admin.html",count=count,doc=doc,DATA=myresult)
    else:
+       myresult=admninfo()
        return render_template("hospital-add-doctor.html",DATA=myresult)
 
 @app.route('/addp',methods = ['POST', 'GET'])
 def addpatient():
     myresult=admninfo()
     if request.method == 'POST': 
-      firstName= request.form['firstname'].capitalize()
-      lastName= request.form['lastname'].upper()
-      email= request.form['email'].lower()
-      Password = request.form['password']
-      Gender= request.form['gender']
-      Phone= request.form['phone']
-      Birthdate= request.form['dateofbirth']
+        firstName= request.form['firstname'].capitalize()
+        lastName= request.form['lastname'].upper()
+        email= request.form['email'].lower()
+        Password = request.form['password']
+        Gender= request.form['gender']
+        Phone= request.form['phone']
+        Birthdate=  request.form['dateofbirth']
+    
+     
+        age = calculateAge(Birthdate)
+        print (age)
 
-      sql1= "INSERT INTO users (email,password,category) VALUES (%s,%s, %s)"
-      val1= (email,Password,1)
+        if  age >= 16:
+         
+            sql1= "INSERT INTO users (email,password,category) VALUES (%s,%s, %s)"
+            val1= (email,Password,1)
 
-      sql2= sql2= "INSERT INTO patients (first_name,last_name,Gender,Phone,email,Birthdate) VALUES (%s,%s, %s,%s, %s,%s)"
-      mycursor.execute(sql1, val1)
-      val2= (firstName,lastName,Gender,Phone,email,Birthdate)
-      mycursor.execute(sql2, val2)
-      mydb.commit() 
-      count= admincount()
-      doc=adminView()
-      return render_template("admin.html",count=count,doc=doc,DATA=myresult)
+            sql2= sql2= "INSERT INTO patients (first_name,last_name,Gender,Phone,email,Birthdate) VALUES (%s,%s, %s,%s, %s,%s)"
+            mycursor.execute(sql1, val1)
+            val2= (firstName,lastName,Gender,Phone,email,Birthdate)
+            mycursor.execute(sql2, val2)
+            mydb.commit() 
+            count= admincount()
+            doc=adminView()
+            flash ("PATIENT IS ADDED SUCCESSFULLY")
+            return render_template("admin.html",count=count,doc=doc,DATA=myresult)
+        else :
+           flash ("ASK FOR PARENTS INFO") 
+           return render_template("hospital-add-patient.html",DATA=myresult)
     else:
        return render_template("hospital-add-patient.html",DATA=myresult)
        
@@ -316,13 +382,28 @@ def viewpatient():
             } 
     return render_template('hospital-ad-patients-list.html',patdata=data1,DATA=result)
     
+@app.route('/drdelete/<int:record_id>', methods = ['POST', 'GET'])
+def drdelete(record_id):
+      flash("Record Has Been Deleted Successfully")
+      mycursor.execute(f"SELECT email FROM doctors WHERE DID = {record_id}")
+      email = mycursor.fetchone()
+      sql1= "DELETE FROM users WHERE email = %s"
+      sql2 = f"DELETE FROM doctors WHERE DID = {record_id}"
+      mycursor.execute(sql2)
+      mycursor.execute(sql1, email) 
+      mydb.commit()  
+      return   redirect(url_for('admin'))
+
 
 #doctor routes
  
 @app.route('/dlogin')
 def doctor():
      myresult=drinfo()
-     return render_template('doctor.html',data=myresult)    
+     countdoc=drcount()
+     alldrs=get_doctors()
+     mypatients= get_mypatients()
+     return render_template('doctor.html',data=myresult, countdoc=countdoc,mypatients=mypatients,drs=alldrs)    
    
 @app.route('/u', methods = ['POST', 'GET'])
 def user_prof():
@@ -386,22 +467,35 @@ def drappoin():
       patients = mycursor.fetchall()
       return render_template('hospital-book-appointment.html',patients=patients,data=myresult)     
 
-@app.route('/dsched')
-def drsched():
-     myresult=drinfo()
-     mycursor.execute("SELECT Surgery_name,date,time FROM appointments INNER JOIN surgery ON surgery= idSurgery ")
-     calendar = mycursor.fetchall()  
-     return render_template('hospital-doctor-schedule.html',calendar = calendar,data=myresult)   
-   
+
 @app.route('/dlist')
 def drlist():
      myresult=drinfo()
      drl=adminView()
-     return render_template('hospital-doctors-list.html',data=myresult,dataaa=drl)   
+     scandata=scansdrview()
+     return render_template('hospital-doctors-list.html',data=myresult,dataaa=drl,scandata=scandata)   
+
+@app.route('/dsched')
+def dcalender():
+    email=dr1
+    myresult=drinfo()
+    mycursor.execute("SELECT DID FROM doctors WHERE email=%s",(email,))
+    cal=mycursor.fetchone()    
+    did=cal[0]
+    mycursor.execute("SELECT Surgery_name,date,time FROM appointments INNER JOIN surgery ON surgery= idSurgery WHERE DID=%s",(did,))
+    calendar = mycursor.fetchall()  
+    mycursor.execute("SELECT Surgery_name,date,time FROM surgery_schedule INNER JOIN doctors ON surgery_schedule.DID= doctors.DID JOIN surgery on Specialization=idSurgery WHERE doctors.DID=%s",(did,))
+    surgeries = mycursor.fetchall()  
+    return render_template('cal.html', calendar = calendar,surgeries=surgeries,data=myresult)
+
+
 
 @app.route('/dredit',methods=['POST','GET'])
 def dredit():
     myresult= drinfo()
+    countdoc=drcount()
+    alldrs=get_doctors()
+    mypatients= get_mypatients()
     if request.method == 'POST':
         
         id = myresult[0][0]
@@ -425,11 +519,14 @@ def dredit():
             photo=myresult[0][-1]
         else:
             photo='static\images\doctor.png'
-        return render_template('doctor.html',data=myresult, user_image=photo)
+        return render_template('doctor.html',data=myresult, user_image=photo,countdoc=countdoc,mypatients=mypatients,drs=alldrs)
 
 @app.route('/docpass',methods=['POST','GET'])  
 def docpass():
     myresult=drinfo()
+    countdoc=drcount()
+    alldrs=get_doctors()
+    mypatients= get_mypatients()
     if request.method == 'POST':
 
         currpass = request.form['password']
@@ -461,7 +558,7 @@ def docpass():
               else:
                 photo='static\images\doctor.png'
              #   flash("You have logged in succesfully",category="success")
-            return render_template('doctor.html',data=myresult, user_image=photo)
+            return render_template('doctor.html',data=myresult, user_image=photo,countdoc=countdoc,mypatients=mypatients,drs=alldrs)
           
         else :
               flash("current password is wrong ")
@@ -470,7 +567,7 @@ def docpass():
               else:
                 photo='static\images\doctor.png'
              #   flash("You have logged in succesfully",category="success")
-        return render_template('doctor.html',data=myresult, user_image=photo)
+        return render_template('doctor.html',data=myresult, user_image=photo,countdoc=countdoc,mypatients=mypatients,drs=alldrs)
    
    
 #functions
@@ -508,6 +605,7 @@ def time(category_id2):
 
 @app.route('/pedit',methods=['POST','GET'])
 def pedit():
+    doctors = visiteddrs()
     myresult=patinfo()
     if request.method == 'POST':
         id = myresult[0][0]
@@ -527,12 +625,13 @@ def pedit():
                   photo=myresult[0][-1]
         else:
                    photo='static\images\profile.jpg'
-        return render_template('profile.html',datap=myresult, user_image=photo)
+        return render_template('profile.html',datap=myresult, user_image=photo,doctors=doctors)
         
    
 @app.route('/patpass',methods=['POST','GET'])  
 def patpass():
     myresult=patinfo()
+    doctors = visiteddrs()
     if request.method == 'POST':
         currpass = request.form['password']
         newpass =  request.form['newpassword']
@@ -567,7 +666,7 @@ def patpass():
                         photo=myresult[0][-1]
               else:
                         photo='static\images\profile.jpg'
-              return render_template('profile.html',datap=myresult ,user_image=photo)
+              return render_template('profile.html',datap=myresult ,user_image=photo,doctors=doctors)
           
         else :
                 flash("current password is wrong ")
@@ -575,10 +674,11 @@ def patpass():
                         photo=myresult[0][-1]
                 else:
                         photo='static\images\profile.jpg'
-        return render_template('profile.html',datap=myresult, user_image=photo)
+        return render_template('profile.html',datap=myresult, user_image=photo,doctors=doctors)
 
 @app.route('/patphoto',methods=['POST','GET'])  
 def patphoto():
+    doctors = visiteddrs()
     myresult=patinfo()
     if 'file' not in request.files:
         flash('No file part')
@@ -588,6 +688,7 @@ def patphoto():
         flash('No image selected for uploading')
         return redirect(request.url)
     if file and allowed_file(file.filename):
+    
         myresult=patinfo()
         filename = secure_filename(file.filename)
         # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -607,7 +708,7 @@ def patphoto():
         else:
                    photo='static\images\profile.jpg'
                
-        return render_template('profile.html', filename=filename,datap=myresult, user_image=photo)
+        return render_template('profile.html', filename=filename,datap=myresult, user_image=photo,doctors=doctors)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
@@ -659,18 +760,34 @@ def patdelete(record_id):
       mydb.commit()  
       return   redirect(url_for('admin'))
 
-@app.route('/drdelete/<int:record_id>', methods = ['POST', 'GET'])
-def drdelete(record_id):
-      flash("Record Has Been Deleted Successfully")
-      mycursor.execute(f"SELECT email FROM doctors WHERE DID = {record_id}")
-      email = mycursor.fetchone()
-      sql1= "DELETE FROM users WHERE email = %s"
-      sql2 = f"DELETE FROM doctors WHERE DID = {record_id}"
-      mycursor.execute(sql2)
-      mycursor.execute(sql1, email) 
-      mydb.commit()  
-      return   redirect(url_for('admin'))
-  
+
+def scansview():
+    mydata= patinfo()
+    pid=mydata[0][0]
+    print(pid)
+    mycursor.execute(f"SELECT scan_path, comments FROM pat_scans  WHERE PatID={pid}")
+    myresult = mycursor.fetchall()
+    print(myresult)
+    data={
+        #'message':"data retrieved",
+        'rec':myresult,
+        #'header':row_headers
+        }
+    return data
+
+def scansdrview():
+    mydata= drinfo()
+    did=mydata[0][0]
+    mycursor.execute(f"SELECT scan_path, comments,last_name FROM pat_scans JOIN patients ON PatID=PID WHERE DocID={did}")
+    myresult = mycursor.fetchall()
+    print(myresult)
+    data={
+        #'message':"data retrieved",
+        'rec':myresult,
+        #'header':row_headers
+        }
+    return data
+
 def drview():
        mycursor.execute("SELECT DID, Name, Specialization FROM doctors")
        myresult = mycursor.fetchall()
@@ -731,6 +848,28 @@ def admincount():
                 'countpat':patmyresult[0],  
                 'counttapp':appmyresult[0]              }
     return adminlist
+
+def drcount():
+    mydr=drinfo()
+    docid=mydr[0][0]
+    num=0
+    mycursor.execute(f"SELECT date FROM appointments WHERE DID={docid}")
+    myresult = mycursor.fetchall()
+    for x in range(len(myresult)):
+        if compare_date(myresult[x][0]):
+            num+=1
+    mycursor.execute("SELECT COUNT(DID) FROM doctors")
+    myresultdoc = mycursor.fetchone()
+    mycursor.execute("SELECT COUNT(PID) FROM patients")
+    patmyresult = mycursor.fetchone()
+    mycursor.execute(f"SELECT COUNT(appointment_id) FROM appointments WHERE DID={docid}")
+    appmyresult = mycursor.fetchone()
+    adminlist={'countapp':num, #future appointments
+                'countdr':myresultdoc[0],      #total drs          
+                'countpat':patmyresult[0],  #total pats
+                'counttapp':appmyresult[0]    # total app
+                          }
+    return adminlist
      
 # def countdoc():
 #      mycursor.execute("SELECT COUNT(DID) FROM doctors")
@@ -765,15 +904,27 @@ def appoin_table():
      myresult=mycursor.fetchall()   
      return myresult  
  
-# def surgery_table():
-#     mycursor.execute("SELECT * FROM patients")
-#     myresult=mycursor.fetchall()
-#     return myresult  
-  
 def get_doctors():
-    mycursor.execute("SELECT* FROM doctors INNER JOIN surgery ON Specialization=idSurgery")
+    email=dr1
+    mycursor.execute("SELECT DID FROM doctors WHERE email=%s",(email,))
+    x= mycursor.fetchone()
+    did=x[0]
+    mycursor.execute("SELECT * FROM appointments WHERE DID=%s",(did,))
+    myres=mycursor.fetchall()
+    return myres
+  
+
+
+def get_mypatients():
+    myresult=drinfo()
+    myid=myresult[0][0]
+    mycursor.execute(f"SELECT first_name, last_name,photo_path FROM surgery.appointments JOIN surgery.patients ON appointments.PID=patients.PID WHERE DID={myid};")
     myresult=mycursor.fetchall()
     return myresult
+
+def calculateAge (bdate):
+    age = pd.to_datetime('today').year-pd.to_datetime(bdate).year
+    return age
 
 def adminView():
     mycursor.execute("SELECT name, Surgery_name, photo_path, phone,email, Birthdate,DID FROM doctors INNER JOIN surgery ON Specialization=idSurgery")
@@ -794,7 +945,15 @@ def adminView():
         doctors.append(temp)
     doctors=tuple(doctors)
     return doctors
-     
+
+def visiteddrs():
+       email=patient1
+       mycursor.execute("SELECT PID FROM patients WHERE email=%s",(email,))
+       x= mycursor.fetchone()
+       pid=x[0]
+       mycursor.execute("SELECT doctors.DID, Name FROM doctors JOIN appointments ON doctors.DID=appointments.DID WHERE PID= %s",(pid,))
+       myresult = mycursor.fetchall()
+       return myresult     
 
   
 app.secret_key="super secret key" 
@@ -804,4 +963,3 @@ app.secret_key="super secret key"
 if __name__ == '__main__':
     app.run(debug=True) 
      
-    

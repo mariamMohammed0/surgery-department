@@ -1,22 +1,22 @@
 # from unittest import result
 import datetime
 import mysql.connector
-from datetime import date
+# from datetime import date
 
 
-def calculate_age(born):
-    today = date.today()
-    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+# def calculate_age(born):
+#     today = date.today()
+#     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
-def drview():
-       mycursor.execute("SELECT DID, Name, Specialization FROM doctors")
-       myresult = mycursor.fetchall()
-       data={
-              #'message':"data retrieved",
-              'rec':myresult,
-              #'header':row_headers
-              }
-       return data
+# def drview():
+#        mycursor.execute("SELECT DID, Name, Specialization FROM doctors")
+#        myresult = mycursor.fetchall()
+#        data={
+#               #'message':"data retrieved",
+#               'rec':myresult,
+#               #'header':row_headers
+#               }
+#        return data
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -27,35 +27,66 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-def compare_date(appdate):
-    today = date.today()
-    if today.year<=appdate.year:
-        if today.month<=appdate.month:
-            if today.day<appdate.day:
-                return True
-    else:
-        return False
+mycursor.execute(f"SELECT first_name, last_name,photo_path FROM surgery.appointments JOIN surgery.patients ON appointments.PID=patients.PID WHERE DID={11};")
+myresult=mycursor.fetchall()
+print(myresult)
+
+# mycursor.execute("SELECT * FROM doctors WHERE email='hisoka@gmail.com'")
+# myresult=mycursor.fetchall() 
+# print(myresult)
+
+# mycursor.execute("SELECT Name,DID FROM Doctors;")
+# doctors = mycursor.fetchall()  
+# print(doctors)
+# for row in doctors:
+#   print (row[1])
+
+# mycursor.execute("SELECT * FROM patients WHERE email=%s",('dodo@hotmail.com',))
+# # print("SELECT * FROM patients WHERE email=%s",('dodo@hotmail.com',))
+# myresult=mycursor.fetchall()
+# mydata=myresult
+# pid=mydata[0][0]
+# print(pid)
+# mycursor.execute(f"SELECT scan_path, comments FROM pat_scans WHERE PatID={pid}")
+# myresult = mycursor.fetchall()
+# print(myresult)
+# data={
+#         #'message':"data retrieved",
+#         'rec':myresult,
+#         #'header':row_headers
+#         }
+
+# print(data)
+# SELECT * FROM (((surgery.appointments JOIN surgery.surgery ON surgery=idSurgery) JOIN surgery.doctors ON surgery.appointments.DID=surgery.doctors.DID) JOIN surgery.patients ON surgery.appointments.PID=surgery.patients.PID)
+# def compare_date(appdate):
+#     today = date.today()
+#     if today.year<=appdate.year:
+#         if today.month<=appdate.month:
+#             if today.day<appdate.day:
+#                 return True
+#     else:
+#         return False
 
 
-num=0
-mycursor.execute("SELECT date FROM appointments")
-myresult = mycursor.fetchall()
-for x in range(len(myresult)):
-       if compare_date(myresult[x][0]):
-              num+=1
-mycursor.execute("SELECT COUNT(DID) FROM doctors")
-myresultdoc = mycursor.fetchone()
-mycursor.execute("SELECT COUNT(PID) FROM patients")
-patmyresult = mycursor.fetchone()
-adminlist={'countapp':num,
-              'countdoc':myresultdoc[0],                
-              'countpat':patmyresult[0]                }
-print(adminlist['countapp'])
+# num=0
+# mycursor.execute("SELECT date FROM appointments")
+# myresult = mycursor.fetchall()
+# for x in range(len(myresult)):
+#        if compare_date(myresult[x][0]):
+#               num+=1
+# mycursor.execute("SELECT COUNT(DID) FROM doctors")
+# myresultdoc = mycursor.fetchone()
+# mycursor.execute("SELECT COUNT(PID) FROM patients")
+# patmyresult = mycursor.fetchone()
+# adminlist={'countapp':num,
+#               'countdoc':myresultdoc[0],                
+#               'countpat':patmyresult[0]                }
+# print(adminlist['countapp'])
 
 
 
-# print(compare_date(datetime.date(2022, 6, 15)))
-no=0
+
+
 # print(no)
 # no+=1
 # print(no)

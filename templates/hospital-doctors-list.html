@@ -67,8 +67,8 @@
             
              
               <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{row[1]}}</span><span class="avatar avatar-online"><img src="static/images/surgery.png" alt="avatar"><i></i></span></a>
-                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> Edit Profile</a>	
-                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"> Logout</a>
+                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> <i class="fa-solid fa-pen"></i>Edit Profile</a>	
+                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                 </div>
               </li>
               {% endfor %}
@@ -87,8 +87,7 @@
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
           <li class="active"><a href="http://127.0.0.1:5000/dlogin"><i class="fa-solid fa-house"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Hospital</span></a>
           </li>
-          <li class=" navigation-header"><span data-i18n="Professional">Professional</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Professional"></i>
-          </li>
+         
           <li class=" nav-item"><a href="#"><i class="fa-solid fa-pen"></i><span class="menu-title" data-i18n="Appointment">Appointment</span></a>
             <ul class="menu-content">
               <li><a class="menu-item" href="http://127.0.0.1:5000/dsched"><i></i><span>Doctor Schedule</span></a>
@@ -99,7 +98,7 @@
           </li>
           <li class=" nav-item"><a href="#"><i class="fa-solid fa-stethoscope"></i><span class="menu-title" data-i18n="Doctors">Doctors</span></a>
             <ul class="menu-content">
-              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>All Doctors</span></a>
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>Scans</span></a>
               </li>
              
               <li><a class="menu-item" href="http://127.0.0.1:5000/u"><i></i><span>Doctor Profile</span></a>
@@ -119,7 +118,7 @@
       <div class="content-wrapper">
         <div class="content-header row">
           <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Doctors List</h3>
+            <h3 class="content-header-title">Uploads List</h3>
             <div class="row breadcrumbs-top">
               <div class="breadcrumb-wrapper col-12">
                 <ol class="breadcrumb">
@@ -127,7 +126,7 @@
                   </li>
                   <li class="breadcrumb-item"><a href="#">Doctors</a>
                   </li>
-                  <li class="breadcrumb-item active">All Doctors
+                  <li class="breadcrumb-item active">Patients' Scans
                   </li>
                 </ol>
               </div>
@@ -137,32 +136,33 @@
             
           </div>
         </div>
-        <div class="content-body"><div id="doctors-list">
-
-    <div class="row match-height">
-        {% for row in dataaa %}
-        <div class=" col-xl-4 col-lg-4 col-md-6">
-          <div class="card">
-            <img src="{{row[2]}}" alt=""
-            class="card-img-top img-fluid rounded-circle w-25 mx-auto mt-1">
-              <div class="card-body">
-           
-                
-                <h6 class="card-title font-large-1 mb-0 text-center">Dr {{row[0]}}</h6>
-                <p class="card-text card font-medium-1 text-center mb-0"> Surgeon</p>
-                <p class="font-small-3 text-center">{{row[1]}} specialist</p>
-                <p class="font-small-3 text-center">Email:{{row[4]}}</p>
-                <p class="font-small-3 text-center">Phone no:{{row[3]}}</p>
-                <p class="font-small-3 text-center">Age:{{row[5]}}</p>
+        <div class="content-body">
+          <div id="doctors-list">
 
 
-               
+      <div class="row match-height">
+          {% for row in scandata.rec %}
+          <div class=" col-xl-4 col-lg-4 col-md-6">
+              <div class="card">
+                  <!-- <img src="static\images\profile.jpg" alt="" class="card-img-top img-fluid rounded-circle w-25 mx-auto mt-1"> -->
+                  <a target="_blank" href="{{row[0]}}">
+                    <center><img src="{{row[0]}}"  alt=""  style="width: 70% ;margin-top: 10px; object-fit: contain ; align-item:center"></center>
+                    </a>
+                  <div class="card-body">
+
+
+                    <p class="card-title font-large-1 mb-0 text-center">From: {{row[2]}} </p>
+                      <h6 class="card-title  mb-0 text-center">Comments: </h6>
+                      <p class="card-title  mb-0 text-center">{{row[1]}} </p>
+                      
+
+                  </div>
+                  
               </div>
-            </div>
-        </div>
-        {% endfor %}
-        
-    </div>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
 </div>
 
         </div>

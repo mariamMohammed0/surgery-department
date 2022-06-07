@@ -42,25 +42,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
   
 
-    <script type="text/javascript">
-      $(document).ready(function() {
-       var calendar = $('#fc-external-drag').fullCalendar({
-     
-        header:{
-         left:'prev,next today',
-         center:'title',
-         right:'month'
-        },
-        events: [{% for row in calendar %}
-                    { title : '{{row[0]}} appointment at {{row[2]}}' , start : '{{row[1]}}',} , 
-                  {% endfor %}],
-  
-      });
-      });
-    
-      
-    </script>
-
 
   </head>
   <!-- END: Head-->
@@ -97,8 +78,8 @@
             
              
               <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{row[1]}}</span><span class="avatar avatar-online"><img src="static/images/surgery.png" alt="avatar"><i></i></span></a>
-                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> Edit Profile</a>	
-                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"> Logout</a>
+                <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="http://127.0.0.1:5000/u"> <i class="fa-solid fa-pen"></i>Edit Profile</a>	
+                  <div class="dropdown-divider"></div><a class="dropdown-item" href="http://127.0.0.1:5000"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                 </div>
               </li>
               {% endfor %}
@@ -117,8 +98,7 @@
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
           <li class="active"><a href="http://127.0.0.1:5000/dlogin"><i class="fa-solid fa-house"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Hospital</span></a>
           </li>
-          <li class=" navigation-header"><span data-i18n="Professional">Professional</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Professional"></i>
-          </li>
+          
           <li class=" nav-item"><a href="#"><i class="fa-solid fa-pen"></i><span class="menu-title" data-i18n="Appointment">Appointment</span></a>
             <ul class="menu-content">
               <li><a class="menu-item" href="http://127.0.0.1:5000/dsched"><i></i><span>Doctor Schedule</span></a>
@@ -129,7 +109,7 @@
           </li>
           <li class=" nav-item"><a href="#"><i class="fa-solid fa-stethoscope"></i><span class="menu-title" data-i18n="Doctors">Doctors</span></a>
             <ul class="menu-content">
-              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>All Doctors</span></a>
+              <li><a class="menu-item" href="http://127.0.0.1:5000/dlist"><i></i><span>Scans</span></a>
               </li>
              
               <li><a class="menu-item" href="http://127.0.0.1:5000/u"><i></i><span>Doctor Profile</span></a>

@@ -8,6 +8,11 @@
   <title>patient's page</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b705027cc2.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -33,8 +38,9 @@
       <a href="http://127.0.0.1:5000/plogin" class="logo d-flex align-items-center">
         <img src="static/images/profile.jpg" alt="">
         <span class="d-none d-lg-block">Patient's page</span>
+        
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <i class="fa-solid fa-bars toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <nav class="header-nav ms-auto">
@@ -48,6 +54,7 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            
             <!-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
             {% for row in datap %}
             <span class="d-none d-md-block dropdown-toggle ps-2">{{row[1]}} {{row[6]}}</span>
@@ -66,7 +73,7 @@
             </li>
             <li>
               <a class="dropdown-item d-flex align-items-center" href="http://127.0.0.1:5000/plogin">
-                <i class="bi bi-person"></i>
+                <i class="fa-solid fa-house"></i>
                 <span>My Profile</span>
               </a>
             </li>
@@ -77,7 +84,7 @@
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="http://127.0.0.1:5000">
-                <i class="bi bi-box-arrow-right"></i>
+                <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Sign Out</span>
               </a>
             </li>
@@ -118,7 +125,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="http://127.0.0.1:5000/plogin">
           <!-- <i class="bi bi-grid"></i> -->
-          <i class="bi bi-person"></i>
+          <i class="fa-solid fa-house"></i>
           <span>profile</span>
         </a>
       </li><!-- End Dashboard Nav -->
@@ -127,7 +134,7 @@
 
       <li class="nav-item">
         <a class="nav-link " href="http://127.0.0.1:5000/appoin">
-          <i class="bi bi-layout-text-window-reverse"></i>
+          <i class="fa-solid fa-calendar-check"></i>
           <span>Book appointment</span>
         </a>
       </li><!-- End Profile Page Nav -->
@@ -135,14 +142,21 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="http://127.0.0.1:5000/pcal">
-          <i class="bi bi-file-earmark"></i>
+          <i class="fa-solid fa-calendar"></i>
           <span>My calender</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="http://127.0.0.1:5000/contact">
-          <i class="bi bi-file-earmark"></i>
+          <i class="fa-solid fa-phone"></i>
           <span>Contact</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="http://127.0.0.1:5000/scans">
+          <i class="fa-solid fa-image"></i>
+          <span>Uploaded Scans</span>
         </a>
       </li><!-- End Blank Page Nav -->
 
@@ -207,6 +221,10 @@
 
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-Upload-Scan">Upload Scan</button>
                 </li>
 
               </ul>
@@ -363,6 +381,51 @@
                     </div>
                   </form><!-- End Change Password Form -->
                   {% endfor %}
+                </div>
+
+
+                <div class="tab-pane fade pt-3" id="profile-Upload-Scan">
+                  <!-- Upload Scan Form -->
+                  <form method="post" action="{{ url_for('scanupload') }}" enctype="multipart/form-data">
+
+                    
+                      <dl>
+                          <p>
+                              <input type="file" name="file" class="form-control" autocomplete="off" required>
+                          </p>
+                      </dl>
+
+                      <label for="comments" class="col-md-4 col-lg-3 col-form-label">Add comment</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="comment" type="text" class="form-control" id="comments" maxlength="255">
+                      </div>
+                      
+
+                      <div class="form__fieldset">
+                      <label for="docname" class="col-md-4 col-lg-3 col-form-label">Doctor Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <div class="row mb-3">
+                          
+                            <select  name="surgeon" class="form__input form__select" id="surgeon"required> 
+                              <option value="" name="surgeon"selected="selected">select your surgeon</option>
+                              {% for row in doctors %}
+                              <option value="{{row[0]}}">Dr.{{row[1]}}</option>
+                              {% endfor %}
+                        
+                          </select>
+                          </div>
+                          </div>
+                        </div>
+
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-primary">Upload Scan</button>
+                        </div>
+                      </div>
+                      
+
+                    
+                  </form><!-- End Change Password Form -->
+                
                 </div>
 
               </div><!-- End Bordered Tabs -->
