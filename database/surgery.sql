@@ -39,7 +39,7 @@ CREATE TABLE `admins` (
 
 LOCK TABLES `admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT INTO `admins` VALUES (1,'azoza','female','2001-10-13',1111087653,'ezzat@gmail.com');
+INSERT INTO `admins` VALUES (1,'Mariam ','female','2001-10-13',1111087653,'ezzat@gmail.com');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `appointments` (
   `surgery` int DEFAULT NULL,
   `time` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `appointments` (
 
 LOCK TABLES `appointments` WRITE;
 /*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
-INSERT INTO `appointments` VALUES (13,4,2,'2022-07-15',4,'9pm-10pm'),(14,11,2,'2022-06-15',4,'9pm-10pm'),(16,4,1,'2022-06-08',4,'8pm-9pm');
+INSERT INTO `appointments` VALUES (1,3,5,'2022-07-07',4,'4pm-5pm'),(2,3,1,'2022-06-22',4,'4pm-5pm'),(3,1,5,'2022-06-23',7,'4pm-5pm'),(4,5,7,'2022-06-17',1,'1pm-2pm'),(5,6,5,'2022-06-23',2,'2pm-3pm');
 /*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,7 @@ CREATE TABLE `doc_schedule` (
 
 LOCK TABLES `doc_schedule` WRITE;
 /*!40000 ALTER TABLE `doc_schedule` DISABLE KEYS */;
-INSERT INTO `doc_schedule` VALUES (3,'3pm-4pm',1),(3,'4pm-5pm',2),(4,'8pm-9pm',3),(4,'9pm-10pm',4),(5,'4pm-5pm',5),(6,'11am-12pm',6),(7,'2pm-3pm',7),(7,'6pm-7pm',8),(8,'4pm-5pm',9),(9,'1pm-2pm',10),(9,'2pm-3pm',11),(10,'5pm-6pm',12);
+INSERT INTO `doc_schedule` VALUES (1,'3pm-4pm',1),(1,'4pm-5pm',2),(8,'8pm-9pm',3),(8,'9pm-10pm',4),(3,'4pm-5pm',5),(3,'11am-12pm',6),(9,'2pm-3pm',7),(4,'6pm-7pm',8),(5,'4pm-5pm',9),(5,'1pm-2pm',10),(6,'2pm-3pm',11),(7,'5pm-6pm',12);
 /*!40000 ALTER TABLE `doc_schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +114,7 @@ CREATE TABLE `doctors` (
   `photo_path` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`DID`),
   KEY `speciality_idx` (`Specialization`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `doctors` (
 
 LOCK TABLES `doctors` WRITE;
 /*!40000 ALTER TABLE `doctors` DISABLE KEYS */;
-INSERT INTO `doctors` VALUES (4,'Amira','female',1001276539,'4','maramiro@gmail.com','2001-10-15',NULL),(11,'ahmed','male',1008765439,'6','ahmed@gmail.com','2001-06-03','static/uploads/pexels-simon-robben-614810_04_06_2022_18_47_12.jpg'),(16,'Ee','male',1111987654,'4','ee@gmail.com','1980-06-07',NULL),(19,'So3ban','male',98765,'3','tsts@hotmail.com','1990-05-05',NULL);
+INSERT INTO `doctors` VALUES (1,'Amira mohamed','Female',1002767878,'7','amira@gmail.com','1990-10-15',NULL),(3,'Kareem Ahmed','male',100176864,'4','kareem@gmail.com','1970-06-14','static/uploads/PHOTO-2022-06-07-10-50-40_07_06_2022_12_14_04.jpg'),(5,'Maha ahmed','Female',1009876267,'1','maha@gmail.com','1995-02-09',NULL),(6,'Mayar Ehab','Female',1009876365,'2','mayar@gmail.com','1995-12-29','static/uploads/PHOTO-2022-06-07-10-50-39 2_07_06_2022_13_14_53.jpg'),(7,'Hana ahmed','Female',11198762,'6','hana@gmail.com','1992-09-07',NULL),(8,'Peter hany','male',1111876567,'3','peter@gmail.com','1990-06-14',NULL),(9,'Ahmed mohamed','male',1187656,'5','ahmed@gmail.com','1970-06-23',NULL);
 /*!40000 ALTER TABLE `doctors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `pat_scans` (
 
 LOCK TABLES `pat_scans` WRITE;
 /*!40000 ALTER TABLE `pat_scans` DISABLE KEYS */;
-INSERT INTO `pat_scans` VALUES (8,'static/uploads/IBM\'s Watson could learn how to identify cancer and heart disease from X-rays and MRI scans_06_06_2022_15_36_25.jpg','chest xray',12),(4,'static/uploads/IBM\'s Watson could learn how to identify cancer and heart disease from X-rays and MRI scans_06_06_2022_17_40_03.jpg',';ojp\'o[',11),(1,'static/uploads/apple-touch-icon_06_06_2022_20_35_17.png','hehe',4),(1,'static/uploads/card_06_06_2022_21_07_44.jpg','',4);
+INSERT INTO `pat_scans` VALUES (5,'static/uploads/IMG_9073_07_06_2022_11_59_06.JPG','',3),(1,'static/uploads/IMG_9074_07_06_2022_12_01_14.JPG','',3),(7,'static/uploads/IMG_9068_07_06_2022_12_42_53.JPG','please reply soon',5);
 /*!40000 ALTER TABLE `pat_scans` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `patients` (
   PRIMARY KEY (`PID`),
   KEY `email_idx` (`email`),
   CONSTRAINT `email` FOREIGN KEY (`email`) REFERENCES `users` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `patients` (
 
 LOCK TABLES `patients` WRITE;
 /*!40000 ALTER TABLE `patients` DISABLE KEYS */;
-INSERT INTO `patients` VALUES (1,'mariam','Female','2001-01-29',1111032686,'mariammeccawi@hotmail.com','wael','static/uploads/slides-1_06_06_2022_02_00_42.jpg'),(2,'damed','Male','2002-05-20',1002673869,'dd@hotmail.com','dedi','static/uploads/photo2_04_06_2022_17_24_44.jpg'),(4,'dodo','Male','2003-10-21',1111850989,'dodo@hotmail.com','toto','static/uploads/pexels-andrea-piacquadio-733872_04_06_2022_21_22_50.jpg'),(9,'Mayar','Female','2001-07-03',1111890650,'mayar@hotmail.com','Mohamed',NULL);
+INSERT INTO `patients` VALUES (1,'Mariam','Female','2001-01-29',11110876,'wael@hotmail.com','WAEL','static/uploads/IMG_9057_07_06_2022_12_00_29.JPG'),(2,'Maria','Female','2001-10-20',11187654,'mariammohamedezzat2010@gmail.com','EZZAT',NULL),(3,'Ali','Male','1990-06-14',111098765,'ali@hotmail.com','AHMED',NULL),(5,'Hana','Female','2002-06-15',1111098765,'ha@hotmail.com','AHMED','static/uploads/IMG_9055_07_06_2022_11_53_12.JPG'),(6,'Fady','Male','2001-09-08',11199881,'fady@hotmail.com','ALI','static/uploads/IMG_9060_07_06_2022_12_26_03.JPG'),(7,'Maye','Female','2001-10-16',11208897,'maye@hotmail.com','Khaled','static/uploads/IMG_9055_07_06_2022_14_21_32.JPG');
 /*!40000 ALTER TABLE `patients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +197,7 @@ CREATE TABLE `surgery` (
   `Surgery_name` varchar(45) DEFAULT NULL,
   `Surgery_cost` int DEFAULT NULL,
   PRIMARY KEY (`idSurgery`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `surgery` (
 
 LOCK TABLES `surgery` WRITE;
 /*!40000 ALTER TABLE `surgery` DISABLE KEYS */;
-INSERT INTO `surgery` VALUES (3,'catarct',4000),(4,'LASIK',777),(5,'PRK',5000),(6,'Glaucoma surgery',20000);
+INSERT INTO `surgery` VALUES (1,'Hernia',25000),(2,'Cardio',30000),(3,'Catarct',4000),(4,'LASIK',777),(5,'PRK',5000),(6,'Glaucoma',20000),(7,'Neuro',15000);
 /*!40000 ALTER TABLE `surgery` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +224,7 @@ CREATE TABLE `surgery_schedule` (
   `date` date DEFAULT NULL,
   `time` time DEFAULT NULL,
   PRIMARY KEY (`surg_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +233,7 @@ CREATE TABLE `surgery_schedule` (
 
 LOCK TABLES `surgery_schedule` WRITE;
 /*!40000 ALTER TABLE `surgery_schedule` DISABLE KEYS */;
-INSERT INTO `surgery_schedule` VALUES (1,4,1,'2022-06-08','10:30:00'),(2,4,2,'2022-06-21','12:00:00'),(3,4,2,'2022-06-08','14:00:00'),(4,4,1,'2022-06-08','12:00:00'),(5,4,1,'2022-06-16','10:00:00'),(6,11,2,'2022-06-22','10:00:00');
+INSERT INTO `surgery_schedule` VALUES (1,3,1,'2022-06-17','10:00:00'),(2,5,5,'2022-06-23','10:00:00'),(3,5,7,'2022-06-22','10:00:00'),(4,5,7,'2022-07-19','10:00:00');
 /*!40000 ALTER TABLE `surgery_schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +258,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('ahmed@gmail.com','123456789',2),('dd@hotmail.com','asdfghj',1),('dodo@hotmail.com','mnbvcxz',1),('ee@gmail.com','09887',2),('ezzat@gmail.com','qwertyu',3),('hsnnsh_gib@hotmail.com','hannah1991',1),('maramiro@gmail.com','0987654',2),('mariammeccawi@hotmail.com','1234567',1),('mayar@hotmail.com','1234567',1),('tsts@hotmail.com','ssss',2);
+INSERT INTO `users` VALUES ('ahmed@gmail.com','12345',2),('ali@hotmail.com','12345',1),('amira@gmail.com','12345',2),('ezzat@gmail.com','qwertyu',3),('fady@hotmail.com','12345678',1),('ha@hotmail.com','1234567',1),('hana@gmail.com','12345',2),('ka@hotmail.com','1234567',1),('kareem@gmail.com','1234567',2),('maha@gmail.com','12345',2),('mariammohamedezzat2010@gmail.com','12345',1),('mayar@gmail.com','12345',2),('maye@hotmail.com','12345',1),('peter@gmail.com','12345',2),('wael@hotmail.com','12345',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -271,4 +271,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-07  4:15:09
+-- Dump completed on 2022-07-03 18:11:39

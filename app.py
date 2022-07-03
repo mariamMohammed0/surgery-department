@@ -124,7 +124,7 @@ def home():
             flash(mes3,category="error") 
             return render_template('index.html')    
         else:
-             doctors = visiteddrs()
+        
              sql1 = "INSERT INTO users (email,password,category) VALUES (%s, %s, %s)"
              sql2 = "INSERT INTO patients(first_name, Gender, Birthdate, phone ,email ,last_name) VALUES (%s, %s, %s,%s,%s,%s)"
              
@@ -135,9 +135,11 @@ def home():
              mycursor.execute(sql2, val2)
              mydb.commit() 
              patient1=email
+             photo='static\images\profile.jpg'
+             doctors = visiteddrs()
              myresult=patinfo()
              flash("Your account has been created suceesfully",category="success")
-             return render_template('profile.html',datap=myresult,doctors=doctors)
+             return render_template('profile.html',datap=myresult,doctors=doctors, user_image=photo)
     else:                 
      return render_template('index.html')
     
@@ -305,12 +307,13 @@ def adddoctor():
         myresult=admninfo()
         count= admincount()
         doc=adminView()
+        appoin=appoin_table() 
       else :
           flash("DOCTOR ISN'T OLD ENOUGH" , category="error")  
           return render_template("hospital-add-doctor.html",DATA=myresult)
       
       flash("Successfully added" , category="success")
-      return render_template("admin.html",count=count,doc=doc,DATA=myresult)
+      return render_template("admin.html",count=count,doc=doc,DATA=myresult,app=appoin)
    else:
        myresult=admninfo()
        return render_template("hospital-add-doctor.html",DATA=myresult)
@@ -343,8 +346,9 @@ def addpatient():
             mydb.commit() 
             count= admincount()
             doc=adminView()
+            appoin=appoin_table() 
             flash ("PATIENT IS ADDED SUCCESSFULLY")
-            return render_template("admin.html",count=count,doc=doc,DATA=myresult)
+            return render_template("admin.html",count=count,doc=doc,DATA=myresult,app=appoin)
         else :
            flash ("ASK FOR PARENTS INFO") 
            return render_template("hospital-add-patient.html",DATA=myresult)
@@ -376,7 +380,6 @@ def viewpatient():
         pat=tuple(temp)
         patients.append(pat)
     data1={
-            #'message':"data retrieved",
             'rec':patients,
             'header':row_headers
             } 
@@ -421,7 +424,6 @@ def drappoin():
     myresult=drinfo()
     if request.method == 'POST':
         pat = request.form['patient']
-       # time= request.form['time']
         date= request.form['date']
         mycursor.execute("SELECT COUNT(surg_id) FROM surgery_schedule WHERE date=%s ",(date,))
         x=mycursor.fetchone()
@@ -446,27 +448,13 @@ def drappoin():
            mes = "Surgery is successfully reserved at " +time
            flash(mes,category="success") 
            return redirect('/dappoin')
-        #    return render_template('hospital-book-appointment.html',data=myresult) 
-        
-        # x= mycursor.execute("SELECT * FROM surgery_schedule WHERE  date=%s ",(date,))
-        # found=mycursor.fetchone()
-        # if found:
-        #     # mes = "This appointment is not available, please choose another time or date"
-        #     # flash(mes,category="error") 
-        #     # return redirect('/appoin')   
-        # else:
-        #   sql = "INSERT INTO appointments (surgery, DID, time,date) VALUES (%s, %s, %s,%s)"      
-        #   val = (surgery,surgeon,time,date)
-        #   mycursor.execute(sql, val)
-        #   mydb.commit() 
-        #   mes = "Your appointment is successfully reserved"
-        #   flash(mes,category="success") 
-        #   return redirect('/plogin')
     else:
-      mycursor.execute("SELECT DISTINCT patients.PID, first_name, last_name FROM appointments INNER JOIN patients ON appointments.PID= patients.PID ")
+      mycursor.execute("SELECT DID FROM doctors WHERE email=%s",(email,))
+      cal=mycursor.fetchone()    
+      did=cal[0]  
+      mycursor.execute(f"SELECT DISTINCT patients.PID, first_name, last_name FROM appointments INNER JOIN patients ON appointments.PID= patients.PID WHERE appointments.DID={did} ")
       patients = mycursor.fetchall()
       return render_template('hospital-book-appointment.html',patients=patients,data=myresult)     
-
 
 @app.route('/dlist')
 def drlist():
@@ -487,8 +475,6 @@ def dcalender():
     mycursor.execute("SELECT Surgery_name,date,time FROM surgery_schedule INNER JOIN doctors ON surgery_schedule.DID= doctors.DID JOIN surgery on Specialization=idSurgery WHERE doctors.DID=%s",(did,))
     surgeries = mycursor.fetchall()  
     return render_template('cal.html', calendar = calendar,surgeries=surgeries,data=myresult)
-
-
 
 @app.route('/dredit',methods=['POST','GET'])
 def dredit():
@@ -760,7 +746,6 @@ def patdelete(record_id):
       mydb.commit()  
       return   redirect(url_for('admin'))
 
-
 def scansview():
     mydata= patinfo()
     pid=mydata[0][0]
@@ -821,17 +806,8 @@ def compare_date(appdate):
     else:
         return False
 
-# def countapp():
-#         no=0
-#         mycursor.execute("SELECT date FROM appointments")
-#         myresult = mycursor.fetchall()
-#         for x in range(len(myresult)):
-#             if compare_date(myresult[x][0]):
-#               no+=1
-#         return no
-
 def admincount():
-    num=0
+    num=1
     mycursor.execute("SELECT date FROM appointments")
     myresult = mycursor.fetchall()
     for x in range(len(myresult)):
@@ -852,7 +828,7 @@ def admincount():
 def drcount():
     mydr=drinfo()
     docid=mydr[0][0]
-    num=0
+    num=1
     mycursor.execute(f"SELECT date FROM appointments WHERE DID={docid}")
     myresult = mycursor.fetchall()
     for x in range(len(myresult)):
@@ -870,17 +846,7 @@ def drcount():
                 'counttapp':appmyresult[0]    # total app
                           }
     return adminlist
-     
-# def countdoc():
-#      mycursor.execute("SELECT COUNT(DID) FROM doctors")
-#      myresult = mycursor.fetchone()
-#      return myresult
-
-# def countpat():
-#      mycursor.execute("SELECT COUNT(PID) FROM patients")
-#      myresult = mycursor.fetchone()
-#      return myresult
-
+   
 def patinfo():
     email=patient1
     mycursor.execute("SELECT * FROM patients WHERE email=%s",(email,))
@@ -913,8 +879,6 @@ def get_doctors():
     myres=mycursor.fetchall()
     return myres
   
-
-
 def get_mypatients():
     myresult=drinfo()
     myid=myresult[0][0]
