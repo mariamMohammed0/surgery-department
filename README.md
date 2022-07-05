@@ -35,11 +35,32 @@ The doctor can access many things through his account:
 ## 2. Doctor's profile
      It contains the doctors's perosnal information as name, ID, specialization, birthdate, phone number, email, and gender. The doctor can edit his personal information except his ID which is auto generated, he can also attach personal picture to his account.
 ## 3. Schduele 
-     It contains a calender that shows all the doctor's appointments and surgeries.
+     This page contains a calender that shows all the doctor's appointments and surgeries.
 ## 4. Book surgery
-     It contains a form through which the doctor can choose a surgery appointment for his patients.
+     This page contains a form through which the doctor can choose a surgery appointment for his patients.
 ## 5. Scans
      This page contains all the scans that the patient has sent to the doctor.
+The doctor can logout from his account and return to the homepage. 
+
+# Admin Page
+The admin can access many things through his account:
+## 1. Main page
+      Shows the total number of doctors, patients, and appointments in the surgery department, a list of all doctors and their specialization, and a list of all the booked appointments and their timings.
+## 2. Doctors List
+      This page shows all the doctors in the surgery department and some of their information as their names, specialization, age, phone number, and email.
+      The admin can delete a doctor through this page.
+## 3. Add Doctor  
+      This page contains a form through which the admin can add a doctor to the surgery department.
+## 4. Patients List.
+      This page shows all the patients in the surgery department and some of their information as their ID, name, email, gender, and age
+      The admin can delete a patient through this page.
+## 5. Add Patient
+      This page contains a form through which the admin can add a patient to the surgery department.
+The admin can logout from his account and return to the homepage. 
 
 
-     
+
+
+
+
+
