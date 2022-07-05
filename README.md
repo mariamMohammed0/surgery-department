@@ -19,11 +19,12 @@ The patient can access many things through his account:
 ## 3. Calender
      This page shows the patient's schedule for appointments and surgeries which is booked by the doctor himslef.
 ## 4. Contact
-     This page contact a form to allow the patient to send any message to the hospital.
+     This page contains a form to allow the patient to send any message to the surgery department admin.
 ## 5. Scans
      This page contains all the scans that the patient has sent to his doctors.
- 
- 
+The patient can logout from his account and return to the homepage.          
+     
 # Doctor Page
+
 
      
