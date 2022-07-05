@@ -10,7 +10,7 @@
 Make sure to download the attached database to your computer system and change the password in the python file to yours that to have the file working correctly .
 # Project Description 
 
-# SurgeoCure
+## SurgeoCure
 Surgerical department website whose aim is to help doctors to followup with their patients and book their surgeries, allow admins to trace everything and help patients to book appointments.
 
 ## HomePage
